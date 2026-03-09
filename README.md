@@ -3,8 +3,8 @@ For limited use only with system installed in MecHaRo-Lab at Technical Universit
 
 **PC**
 
-Everything presented here is mean to be run on the PC. Though navigation may work better if it would run directly on the robot due to network issues.
-
+Everything presented here is mean to be run on the PC.
+ 
 _Install_
 
 ``` bash
