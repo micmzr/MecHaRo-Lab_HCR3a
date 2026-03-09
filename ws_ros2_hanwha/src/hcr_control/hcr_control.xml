@@ -1,0 +1,9 @@
+<library path="hcr_control">
+  <class name="hcr_control/RobotSystem"
+         type="hcr_control::RobotSystem"
+         base_class_type="hardware_interface::SystemInterface">
+    <description>
+      Robot hardware plugin for Hanwha HCR robot.
+    </description>
+  </class>
+</library>

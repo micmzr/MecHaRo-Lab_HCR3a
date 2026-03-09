@@ -1,0 +1,13 @@
+{
+    "name": "ROS2",
+    "version": "",
+    "minimumRequiredVersion": "2.001.003.012",
+    "description": "Hanwha HCR3a MoveIT/ROS2 control integration",
+    "vendor": "",
+    "copyright": "Michał Mazur",
+    "contactAddress": "micmazur@pg.edu.pl",
+    "author": "Michał Mazur",
+    "dependencies": {},
+    "license": "",
+    "rodiVersion": "2.005.008.009_G2"
+}

@@ -1,0 +1,68 @@
+<?xml version="1.0" ?>
+<robot name="hcr3a" xmlns:xacro="http://ros.org/wiki/xacro">
+  <xacro:arg name="use_fake_hardware" default="true"/>
+  <xacro:property name="use_fake_hardware" value="$(arg use_fake_hardware)"/>
+  <xacro:arg name="hcr_ip" default="None"/>
+  <xacro:property name="hcr_ip" value="$(arg hcr_ip)"/>
+  <xacro:arg name="hcr_port" default="6667"/>
+  <xacro:property name="hcr_port" value="$(arg hcr_port)"/>
+<!-- OnRobot force sensor parameters -->
+  <xacro:arg name="use_ft" default="false"/>
+  <xacro:property name="use_ft" value="$(arg use_ft)"/>
+  <xacro:arg name="ft_ip" default="192.168.1.1" />
+  <xacro:property name="ft_ip" value="$(arg ft_ip)"/>
+  <xacro:arg name="rdt_sampling_rate" default="500" />
+  <xacro:property name="rdt_sampling_rate" value="$(arg rdt_sampling_rate)"/>
+  <xacro:arg name="sensor_type" default="onrobot" />
+  <xacro:property name="sensor_type" value="$(arg sensor_type)"/>
+  <xacro:arg name="internal_filter_rate" default="0" />
+  <xacro:property name="internal_filter_rate" value="$(arg internal_filter_rate)"/>
+  <xacro:arg name="use_hardware_biasing" default="false" />
+  <xacro:property name="use_hardware_biasing" value="$(arg use_hardware_biasing)"/>
+  <xacro:property name="M_PI" value="3.1415926535897931" />
+
+
+  <!-- Robot description -->
+  <xacro:include filename="$(find hcr3a)/urdf/hcr3a_macro.xacro"/>
+  <xacro:hcr3a prefix=""/>
+
+  <!-- ros2_control -->
+  <xacro:include filename="$(find hcr3a)/urdf/hcr3a.ros2_control.xacro" />
+  <xacro:hcr_ros2_control
+    name="HCRInterfaceHardware"
+    prefix=""
+    use_fake_hardware="${use_fake_hardware}"
+    hcr_ip="${hcr_ip}"
+    hcr_port="${hcr_port}"/>
+
+  <!-- ros2_control -->
+  <xacro:include filename="$(find hcr3a)/urdf/hcr3a_gripper.ros2_control.xacro" />
+  <xacro:gripper_ros2_control
+    name="HCRInterfaceGripper"
+    prefix=""
+    use_fake_hardware="${use_fake_hardware}"/>
+
+  <!-- ft sensor -->
+  <xacro:include filename="$(find hcr3a)/urdf/net_ft_sensor.ros2_control.xacro" />
+  <xacro:net_ft_sensor_ros2_control
+      name="NetFtHardwareInterface"
+      prefix=""
+      use_ft="${use_ft}"
+      sensor_type="${sensor_type}"
+      ft_ip="${ft_ip}"
+      rdt_sampling_rate="${rdt_sampling_rate}"
+      internal_filter_rate="${internal_filter_rate}"
+      use_hardware_biasing="${use_hardware_biasing}"/>
+
+  <!-- OnRobot Camera -->
+  <xacro:include filename="$(find realsense2_description)/urdf/_d415.urdf.xacro" />
+  <xacro:sensor_d415
+      name="camera"
+      parent="camera_Link"
+      use_nominal_extrinsics="false"
+      add_plug="false"
+      use_mesh="true">
+      <origin xyz="0 0.0095 0.011" rpy="${M_PI} 0 -${M_PI/2}"/>
+  </xacro:sensor_d415>
+
+</robot>

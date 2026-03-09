@@ -1,0 +1,28 @@
+{
+  "configurations": [
+    {
+      "browse": {
+        "databaseFilename": "${default}",
+        "limitSymbolsToIncludedHeaders": false
+      },
+      "includePath": [
+        "/home/student/ROS2_PG/ws_ros2_hanwha/install/yolov8_msgs/include/**",
+        "/home/student/ROS2_PG/ws_ros2_hanwha/install/net_ft_driver/include/**",
+        "/home/student/ROS2_PG/ws_ros2_hanwha/install/net_ft_diagnostic_broadcaster/include/**",
+        "/home/student/ROS2_PG/ws_ros2_hanwha/install/hcr_gripper/include/**",
+        "/home/student/ROS2_PG/ws_ros2_hanwha/install/hcr_control/include/**",
+        "/opt/ros/humble/include/**",
+        "/home/student/ROS2_PG/ws_ros2_hanwha/src/pentagram/include/**",
+        "/home/student/ROS2_PG/ws_ros2_hanwha/src/ros2_net_ft_driver/net_ft_diagnostic_broadcaster/include/**",
+        "/home/student/ROS2_PG/ws_ros2_hanwha/src/ros2_net_ft_driver/net_ft_driver/include/**",
+        "/usr/include/**"
+      ],
+      "name": "ROS",
+      "intelliSenseMode": "gcc-x64",
+      "compilerPath": "/usr/bin/gcc",
+      "cStandard": "gnu11",
+      "cppStandard": "c++14"
+    }
+  ],
+  "version": 4
+}

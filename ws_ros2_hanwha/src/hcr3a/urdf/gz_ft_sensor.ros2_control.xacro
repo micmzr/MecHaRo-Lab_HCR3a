@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <xacro:macro name="ft_sensor_ros2_control" params="prefix">
+    <ros2_control name="force_torque_sensor" type="system">  
+      <hardware>
+        <plugin>gz_ros2_control/GazeboSimSystem</plugin>
+      </hardware>
+      <joint name="${prefix}joint_6"/>
+      <sensor name="force_torque_sensor" type="force_torque">
+        <state_interface name="force.x"/>
+        <state_interface name="force.y"/>
+        <state_interface name="force.z"/>
+        <state_interface name="torque.x"/>
+        <state_interface name="torque.y"/>
+        <state_interface name="torque.z"/>
+      </sensor>
+    </ros2_control>
+
+    <gazebo reference="${prefix}joint_6">
+      <sensor name="force_torque_sensor" type="force_torque">
+        <update_rate>10.0</update_rate>
+        <always_on>true</always_on>
+        <visualize>true</visualize>
+        <topic>force_torque_sensor</topic>
+      </sensor>
+    </gazebo>
+    
+  </xacro:macro>
+
+</robot>

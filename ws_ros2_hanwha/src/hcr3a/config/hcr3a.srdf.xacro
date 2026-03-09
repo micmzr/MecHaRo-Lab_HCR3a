@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<robot xmlns:xacro="http://wiki.ros.org/xacro" name="hcr3a">
+
+  <xacro:include filename="$(find hcr3a)/config/hcr3a_macro.srdf.xacro"/>
+  <xacro:hcr3a_srdf/>
+
+</robot>

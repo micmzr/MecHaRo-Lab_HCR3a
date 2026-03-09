@@ -1,0 +1,16 @@
+{
+    "python.autoComplete.extraPaths": [
+        "/home/student/ROS2_PG/ws_ros2_hanwha/install/yolov8_ros/lib/python3.10/site-packages",
+        "/home/student/ROS2_PG/ws_ros2_hanwha/install/yolov8_msgs/local/lib/python3.10/dist-packages",
+        "/home/student/ROS2_PG/ws_ros2_hanwha/install/hcr3a/lib/python3.10/site-packages",
+        "/opt/ros/humble/lib/python3.10/site-packages",
+        "/opt/ros/humble/local/lib/python3.10/dist-packages"
+    ],
+    "python.analysis.extraPaths": [
+        "/home/student/ROS2_PG/ws_ros2_hanwha/install/yolov8_ros/lib/python3.10/site-packages",
+        "/home/student/ROS2_PG/ws_ros2_hanwha/install/yolov8_msgs/local/lib/python3.10/dist-packages",
+        "/home/student/ROS2_PG/ws_ros2_hanwha/install/hcr3a/lib/python3.10/site-packages",
+        "/opt/ros/humble/lib/python3.10/site-packages",
+        "/opt/ros/humble/local/lib/python3.10/dist-packages"
+    ]
+}

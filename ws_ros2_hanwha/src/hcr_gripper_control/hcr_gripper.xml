@@ -1,0 +1,9 @@
+<library path="hcr_gripper">
+  <class name="hcr_gripper/Gripper"
+         type="hcr_gripper::Gripper"
+         base_class_type="hardware_interface::SystemInterface">
+    <description>
+      Gripper plugin for Hanwha HCR robot.
+    </description>
+  </class>
+</library>

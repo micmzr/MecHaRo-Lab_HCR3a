@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+    <XImage id="logo" src="resource/ros-logo.svg" height="20" /><br>
+    <!-- <h2>ROS 2 HCR Driver</h2><br> -->
+    <XLabel id="lbHCRIP">HCR ip :</XLabel>
+    <XInput id="inpHCRIP" type="text" maxLength="16" fullWidth="false" />
+
+    <XLabel id="lbHCRPort">HCR port :</XLabel>
+    <XInput id="inpHCRPort" type="text" maxLength="5" fullWidth="false" /><br>
+
+    <XLabel id="lbROS2IP">ROS2 ip :</XLabel>
+    <XInput id="inpROS2IP" type="text" maxLength="16" fullWidth="false" />
+
+    <XLabel id="lbROS2Port">ROS2 port :</XLabel>
+    <XInput id="inpROS2Port" type="text" maxLength="5" fullWidth="false" /><br>
+
+    <XButton id="btnSTART" size="small" text="Daemon START" />
+    <XButton id="btnSTOP" size="small" text="Daemon STOP" />
+    <XLabel id="labelDaemon"></XLabel>
+</body>
+</html>

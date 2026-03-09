@@ -1,0 +1,407 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- This URDF was automatically created by SolidWorks to URDF Exporter! Originally created by Stephen Brawner (brawner@gmail.com) 
+     Commit Version: 1.6.0-4-g7f85cfe  Build Version: 1.6.7995.38578
+     For more information, please see http://wiki.ros.org/sw_urdf_exporter -->
+<robot
+  name="HCR3A">
+<link name="base_footprint">
+    <visual>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+            <box size="0.001 0.001 0.001" />
+        </geometry>
+    </visual>
+</link>
+
+<joint name="base_footprint_joint" type="fixed">
+    <origin xyz="0 0 0.001" rpy="0 0 0" />
+    <parent link="base_footprint"/>
+    <child link="base_link" />
+</joint>
+  <link
+    name="base_link">
+    <inertial>
+      <origin
+        xyz="7.97584139445523E-05 -0.000527096779015093 0.0161532726850179"
+        rpy="0 0 0" />
+      <mass
+        value="0.353281534288233" />
+      <inertia
+        ixx="0.000311825960207989"
+        ixy="5.9599307974952E-08"
+        ixz="7.44586976910788E-08"
+        iyy="0.000322067229599281"
+        iyz="-1.60524553044359E-06"
+        izz="0.000552280538197157" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://hcr3a/meshes/visual/base_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://hcr3a/meshes/visual/base_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <link
+    name="Link_1">
+    <inertial>
+      <origin
+        xyz="-6.5242616417889E-08 -0.0097337674395645 0.0753973498277641"
+        rpy="0 0 0" />
+      <mass
+        value="1.07573995983057" />
+      <inertia
+        ixx="0.00198146807289238"
+        ixy="-8.86868741306961E-09"
+        ixz="1.25971797338394E-08"
+        iyy="0.00167952991787637"
+        iyz="0.000446312968033745"
+        izz="0.00138918799663758" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://hcr3a/meshes/visual/Link_1.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://hcr3a/meshes/visual/Link_1.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="joint_1"
+    type="revolute">
+    <origin
+      xyz="0 0 0.03769"
+      rpy="0 0 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="Link_1" />
+    <axis
+      xyz="0 0 1" />
+    <limit
+      lower="-6.2832"
+      upper="6.2832"
+      effort="0"
+      velocity="3.1416" />
+  </joint>
+  <link
+    name="Link_2">
+    <inertial>
+      <origin
+        xyz="8.53483950180589E-16 -0.085570779889436 0.1005"
+        rpy="0 0 0" />
+      <mass
+        value="2.30109786711967" />
+      <inertia
+        ixx="0.00522849946532153"
+        ixy="1.43743827934285E-19"
+        ixz="-3.7707308376189E-09"
+        iyy="0.00385493593749246"
+        iyz="-5.42101086242752E-19"
+        izz="0.00346751499112964" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://hcr3a/meshes/visual/Link_2.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://hcr3a/meshes/visual/Link_2.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="joint_2"
+    type="revolute">
+    <origin
+      xyz="0 -0.06 0.10091"
+      rpy="0 -1.5708 0" />
+    <parent
+      link="Link_1" />
+    <child
+      link="Link_2" />
+    <axis
+      xyz="0 1 0" />
+    <limit
+      lower="-6.2832"
+      upper="6.2832"
+      effort="0"
+      velocity="3.1416" />
+  </joint>
+  <link
+    name="Link_3">
+    <inertial>
+      <origin
+        xyz="-1.90387525088242E-05 0.0396313745393328 0.129914382263816"
+        rpy="0 0 0" />
+      <mass
+        value="1.57952178341913" />
+      <inertia
+        ixx="0.0068095691924816"
+        ixy="-3.85501364094883E-07"
+        ixz="3.561150690371E-07"
+        iyy="0.00641937210550654"
+        iyz="-0.000194292093001294"
+        izz="0.00139320262270191" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://hcr3a/meshes/visual/Link_3.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://hcr3a/meshes/visual/Link_3.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="joint_3"
+    type="revolute">
+    <origin
+      xyz="0 0 0.201"
+      rpy="0 0 0" />
+    <parent
+      link="Link_2" />
+    <child
+      link="Link_3" />
+    <axis
+      xyz="0 1 0" />
+    <limit
+      lower="-2.7925"
+      upper="2.7925"
+      effort="0"
+      velocity="3.1416" />
+  </joint>
+  <link
+    name="Link_4">
+    <inertial>
+      <origin
+        xyz="-4.67027005505239E-05 -0.0406027060305512 0.0332665690721932"
+        rpy="0 0 0" />
+      <mass
+        value="0.519192975215754" />
+      <inertia
+        ixx="0.000701939891835122"
+        ixy="-4.26991712368047E-08"
+        ixz="1.35116966098824E-07"
+        iyy="0.000662849705445025"
+        iyz="0.000118678805660912"
+        izz="0.000330698653714558" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://hcr3a/meshes/visual/Link_4.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://hcr3a/meshes/visual/Link_4.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="joint_4"
+    type="revolute">
+    <origin
+      xyz="0 -0.044009 0.2815"
+      rpy="0 -1.5708 0" />
+    <parent
+      link="Link_3" />
+    <child
+      link="Link_4" />
+    <axis
+      xyz="0 1 0" />
+    <limit
+      lower="-6.2832"
+      upper="6.2832"
+      effort="0"
+      velocity="6.2832" />
+  </joint>
+  <link
+    name="Link_5">
+    <inertial>
+      <origin
+        xyz="-3.79420180264866E-05 -0.0332658771681864 0.0405154757541425"
+        rpy="0 0 0" />
+      <mass
+        value="0.5191929780426" />
+      <inertia
+        ixx="0.000701939450568525"
+        ixy="-4.26275662606369E-07"
+        ixz="1.38093747978997E-07"
+        iyy="0.000330699143646194"
+        iyz="0.000118678802591304"
+        izz="0.000662849655348212" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://hcr3a/meshes/visual/Link_5.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://hcr3a/meshes/visual/Link_5.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="joint_5"
+    type="revolute">
+    <origin
+      xyz="0 -0.044587 0.103"
+      rpy="0 0 0" />
+    <parent
+      link="Link_4" />
+    <child
+      link="Link_5" />
+    <axis
+      xyz="0 0 1" />
+    <limit
+      lower="-6.2832"
+      upper="6.2832"
+      effort="0"
+      velocity="6.2832" />
+  </joint>
+  <link
+    name="Link_6">
+    <inertial>
+      <origin
+        xyz="-2.17378969565706E-05 -0.0230132318160861 -0.000703594426121668"
+        rpy="0 0 0" />
+      <mass
+        value="0.161414628276217" />
+      <inertia
+        ixx="7.22407264265429E-05"
+        ixy="2.12003951080225E-08"
+        ixz="1.47418008071444E-08"
+        iyy="8.87742320992414E-05"
+        iyz="-5.44489214838527E-07"
+        izz="7.68463644952798E-05" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://hcr3a/meshes/visual/Link_6.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://hcr3a/meshes/visual/Link_6.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="joint_6"
+    type="continuous">
+    <origin
+      xyz="0 -0.10292 0.0445"
+      rpy="0 0 0" />
+    <parent
+      link="Link_5" />
+    <child
+      link="Link_6" />
+    <axis
+      xyz="0 1 0" />
+    <limit
+      effort="0"
+      velocity="6.2832" />
+  </joint>
+</robot>
