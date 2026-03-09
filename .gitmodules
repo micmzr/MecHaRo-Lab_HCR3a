@@ -1,0 +1,3 @@
+[submodule "ws_ros2_hanwha/src/ros2_net_ft_driver"]
+	path = ws_ros2_hanwha/src/ros2_net_ft_driver
+	url = https://github.com/gbartyzel/ros2_net_ft_driver.git
