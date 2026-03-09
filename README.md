@@ -8,7 +8,8 @@ Everything presented here is mean to be run on the PC. Though navigation may wor
 _Install_
 
 ``` bash
-git clone -b jazzy https://github.com/micmzr/MecHaRo-Lab_HCR3a.git
+sudo apt install -y libasio-dev libcurlpp-dev
+git clone --recursive -b jazzy https://github.com/micmzr/MecHaRo-Lab_HCR3a.git
 cd MecHaRo-Lab_ROSBot2Pro/ws_ros2_hanwha
 rosdep install --ignore-src --from-path src/ -y --rosdistro $ROS_DISTRO
 colcon build
