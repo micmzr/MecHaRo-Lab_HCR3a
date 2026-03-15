@@ -1,0 +1,6 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<library path="hcr3a_manipulator_moveit_ikfast_plugin">
+  <class name="hcr3a_manipulator/IKFastKinematicsPlugin" type="hcr3a_manipulator::IKFastKinematicsPlugin" base_class_type="kinematics::KinematicsBase">
+    <description>IKFast61 plugin for closed-form kinematics of hcr3a manipulator</description>
+  </class>
+</library>
