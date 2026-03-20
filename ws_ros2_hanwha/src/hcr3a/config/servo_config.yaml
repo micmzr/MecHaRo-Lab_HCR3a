@@ -27,8 +27,8 @@ robot_link_command_frame: base_link
 incoming_command_timeout: 0.1 
 num_outgoing_halt_msgs_to_publish: 4
 
-lower_singularity_threshold: 170.0
-hard_stop_singularity_threshold: 300.0
+lower_singularity_threshold: 1700.0
+hard_stop_singularity_threshold: 3000.0
 joint_limit_margin: 0.1 
 leaving_singularity_threshold_multiplier: 2.0 
 
