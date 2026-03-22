@@ -60,6 +60,13 @@ def main():
     pose_goal.pose.position.x = 0.430377
     pose_goal.pose.position.y = -0.150136
     pose_goal.pose.position.z = 0.0177264
+#    pose_goal.pose.orientation.x = 0.799098
+#    pose_goal.pose.orientation.y = 0.112868 
+#    pose_goal.pose.orientation.z = -0.576817
+#    pose_goal.pose.orientation.w = -0.126436
+#    pose_goal.pose.position.x = -0.278177
+#    pose_goal.pose.position.y = -0.262118
+#    pose_goal.pose.position.z = 0.499117 
     robot_arm.set_goal_state(pose_stamped_msg=pose_goal, pose_link="tool0")
 
     # plan to goal
