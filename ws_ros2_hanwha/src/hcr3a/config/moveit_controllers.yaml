@@ -27,4 +27,3 @@ gripper_controller:
   default: true
   joints:
       - finger1
-      - finger2
