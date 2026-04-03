@@ -3,8 +3,9 @@ const ProgramNodeService = require('rodix_api').ProgramNodeService;
 const ROS2ProgramNodeContribution = require(path.join(__dirname, 'ROS2ProgramNodeContribution'));
 
 class ROS2ProgramNodeService extends ProgramNodeService{
-    constructor(){
+    constructor(myDaemonSvc){
         super();
+        this.myDaemonSvc = myDaemonSvc;
     }
 
     getIcon() {
@@ -31,7 +32,7 @@ class ROS2ProgramNodeService extends ProgramNodeService{
     }
 
     createContribution(rodiAPI, dataModel){
-        return new ROS2ProgramNodeContribution(rodiAPI, dataModel);
+        return new ROS2ProgramNodeContribution(rodiAPI, dataModel, this.myDaemonSvc);
     }
 
 }
