@@ -5,6 +5,9 @@ from rclpy.logging import get_logger
 from moveit.planning import (
     MoveItPy,
 )
+from geometry_msgs.msg import Pose
+from moveit_msgs.msg import CollisionObject
+from shape_msgs.msg import SolidPrimitive
 
 def plan_and_execute(
     robot,
@@ -36,6 +39,43 @@ def plan_and_execute(
 
     time.sleep(sleep_time)
 
+def add_collision_objects(planning_scene_monitor):
+    """Helper function that adds collision objects to the planning scene."""
+    object_positions = [
+        (0.15, 0.1, 0.5),
+        (0.25, 0.0, 1.0),
+        (-0.25, -0.3, 0.8),
+        (0.25, 0.3, 0.75),
+    ]
+    object_dimensions = [
+        (0.1, 0.4, 0.1),
+        (0.1, 0.4, 0.1),
+        (0.2, 0.2, 0.2),
+        (0.15, 0.15, 0.15),
+    ]
+
+    with planning_scene_monitor.read_write() as scene:
+        collision_object = CollisionObject()
+        collision_object.header.frame_id = "base_link"
+        collision_object.id = "boxes"
+
+        for position, dimensions in zip(object_positions, object_dimensions):
+            box_pose = Pose()
+            box_pose.position.x = position[0]
+            box_pose.position.y = position[1]
+            box_pose.position.z = position[2]
+
+            box = SolidPrimitive()
+            box.type = SolidPrimitive.BOX
+            box.dimensions = dimensions
+
+            collision_object.primitives.append(box)
+            collision_object.primitive_poses.append(box_pose)
+            collision_object.operation = CollisionObject.ADD
+
+        scene.apply_collision_object(collision_object)
+        scene.current_state.update()  # Important to ensure the scene is updated
+
 def main():
     rclpy.init()
     logger = get_logger("hello_moveit_py.pose_goal")
@@ -43,6 +83,9 @@ def main():
     robot = MoveItPy(node_name="hello_moveit_py")
     robot_arm = robot.get_planning_component("manipulator")
     logger.info("MoveItPy instance created")
+
+    planning_scene_monitor = robot.get_planning_scene_monitor()
+    add_collision_objects(planning_scene_monitor)
 
     # set plan start state to current state
     robot_arm.set_start_state_to_current_state()

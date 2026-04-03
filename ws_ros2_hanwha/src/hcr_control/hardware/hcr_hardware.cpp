@@ -93,6 +93,7 @@ CallbackReturn RobotSystem::on_init(const hardware_interface::HardwareInfo & inf
 
     return CallbackReturn::ERROR;
   }
+  // server_addr.sin_addr.s_addr = INADDR_ANY;
 
   if (hcr_port <= 0)
   {
@@ -110,19 +111,32 @@ CallbackReturn RobotSystem::on_init(const hardware_interface::HardwareInfo & inf
     return CallbackReturn::ERROR;
   }
 
-  if (connect(HCR, (struct sockaddr *)&server_addr, sizeof(server_addr)) < 0)
+  if (bind(HCR, (struct sockaddr *)&server_addr, sizeof(server_addr)) < 0)
   {
-    RCLCPP_FATAL(LOGGER, "Could not connect to HCR system");
+    RCLCPP_FATAL(LOGGER, "Could not bind to HCR address");
 
     return CallbackReturn::ERROR;
   }
 
-  struct timeval timeout;
-  timeout.tv_sec = 1; //SOCKET_READ_TIMEOUT_SEC;
-  timeout.tv_usec = 0;
-  setsockopt(HCR, SOL_SOCKET, SO_RCVTIMEO, &timeout, sizeof(timeout));
+  int one = 1;
+  if (setsockopt(HCR, IPPROTO_TCP, TCP_NODELAY, (void *)&one, sizeof(one)) < 0) 
+  {
+    RCLCPP_FATAL(LOGGER, "setsockopt(TCP_NODELAY) failed");
+  }
 
-  HCR_fd = HCR;
+  one = 1;
+  if (setsockopt(HCR, IPPROTO_TCP, TCP_QUICKACK, &one, sizeof(one)) < 0) 
+  {
+    RCLCPP_FATAL(LOGGER, "setsockopt TCP_QUICKACK) failed");
+  }
+  
+  listen(HCR, 3);
+  RCLCPP_INFO(LOGGER, "Listening on port %d...\n", hcr_port);
+
+  struct sockaddr_in socket_addr;
+  int socket_addrlen = sizeof(socket_addr);
+  HCR_fd = accept(HCR, (struct sockaddr *)&socket_addr, (socklen_t *)&socket_addrlen);
+  RCLCPP_INFO(LOGGER, "Client connected from %s:%d\n", inet_ntoa(socket_addr.sin_addr), ntohs(socket_addr.sin_port));
 
   return CallbackReturn::SUCCESS;
 }
@@ -175,51 +189,36 @@ std::vector<hardware_interface::CommandInterface> RobotSystem::export_command_in
 
 return_type RobotSystem::read(const rclcpp::Time & /*time*/, const rclcpp::Duration &/* period*/)
 {
-  RCLCPP_DEBUG(LOGGER, "Send JNT command to HCR");
-
-  send(HCR, GET_JOINTS, strlen(GET_JOINTS), 0);
+  // rclcpp::Time time_start = rclcpp::Clock().now();
+ 
+  if( command_sent == false )
+  {
+    send(HCR_fd, GET_JOINTS, strlen(GET_JOINTS), 0);
+    RCLCPP_DEBUG(LOGGER, "Send JNT command to HCR");
+    command_sent = true;
+  }
+  
   memset(HCR_buf, '\0', sizeof(HCR_buf));
 
-  if (recv(HCR, HCR_buf, sizeof(HCR_buf), 0) > 0)
+  if (recv(HCR_fd, HCR_buf, sizeof(HCR_buf), 0) > 0)
   {
+    command_sent = false;
     RCLCPP_DEBUG(LOGGER, "Get data from HCR: %s", HCR_buf);
 
     if (strncmp("JNT", HCR_buf, 3) == 0)
     {
       double jnts[6];
+      int gpios[8];
 
-      sscanf(HCR_buf + 4, "%lg %lg %lg %lg %lg %lg",
-             jnts, jnts + 1, jnts + 2, jnts + 3, jnts + 4, jnts + 5);
+      sscanf(HCR_buf + 4, "%lg %lg %lg %lg %lg %lg %d %d %d %d %d %d %d %d",
+             jnts, jnts + 1, jnts + 2, jnts + 3, jnts + 4, jnts + 5,
+             gpios, gpios + 1, gpios + 2, gpios + 3,
+             gpios + 4, gpios + 5, gpios + 6, gpios + 7);
 
       for (int i = 0; i < 6; i++)
       {
         joint_position_[i] = jnts[i] * M_PI / 180.l;
       }
-    }
-    else
-    {
-      RCLCPP_WARN(LOGGER, "Unknown data from HCR: %s", HCR_buf);
-    }
-  }
-  else
-  {
-    RCLCPP_WARN(LOGGER, "Cant get data from HCR");
-  }
-
-  send(HCR, GET_GPI, strlen(GET_JOINTS), 0);
-  memset(HCR_buf, '\0', sizeof(HCR_buf));
-
-  if (recv(HCR, HCR_buf, sizeof(HCR_buf), 0) > 0)
-  {
-    RCLCPP_DEBUG(LOGGER, "Get data from HCR: %s", HCR_buf);
-
-    if (strncmp("GPI", HCR_buf, 3) == 0)
-    {
-      int gpios[8];
-
-      sscanf(HCR_buf + 4, "%d %d %d %d %d %d %d %d",
-             gpios, gpios + 1, gpios + 2, gpios + 3,
-             gpios + 4, gpios + 5, gpios + 6, gpios + 7);
 
       for (int i = 0; i < 8; i++)
       {
@@ -235,6 +234,9 @@ return_type RobotSystem::read(const rclcpp::Time & /*time*/, const rclcpp::Durat
   {
     RCLCPP_WARN(LOGGER, "Cant get data from HCR");
   }
+  
+  // rclcpp::Time time_now = rclcpp::Clock().now();
+  // RCLCPP_INFO(LOGGER, "Get from HCR, time taken: %f sec", (time_now - time_start).seconds());
 
   return return_type::OK;
 }
@@ -259,7 +261,7 @@ return_type RobotSystem::write(const rclcpp::Time &, const rclcpp::Duration &)
 
     memset(HCR_buf, '\0', sizeof(HCR_buf));
 
-    sprintf(HCR_buf, "MOV %7.2f %7.2f %7.2f %7.2f %7.2f %7.2f\r\n",
+    sprintf(HCR_buf, "MOV %7.2f %7.2f %7.2f %7.2f %7.2f %7.2f\n",
             (float)(jnts_com[0] * 180.l / M_PI),
             (float)(jnts_com[1] * 180.l / M_PI),
             (float)(jnts_com[2] * 180.l / M_PI),
@@ -267,9 +269,11 @@ return_type RobotSystem::write(const rclcpp::Time &, const rclcpp::Duration &)
             (float)(jnts_com[4] * 180.l / M_PI),
             (float)(jnts_com[5] * 180.l / M_PI));
 
-    send(HCR, HCR_buf, strlen(HCR_buf), 0);
+    send(HCR_fd, HCR_buf, strlen(HCR_buf), 0);
+    command_sent = true;
 
-    RCLCPP_INFO(LOGGER, "Send command to HCR: %s", HCR_buf);
+    RCLCPP_DEBUG(LOGGER, "Send command to HCR: %s", HCR_buf);
+    return return_type::OK;
   }
 
   diff = false;
@@ -290,15 +294,20 @@ return_type RobotSystem::write(const rclcpp::Time &, const rclcpp::Duration &)
 
     memset(HCR_buf, '\0', sizeof(HCR_buf));
 
-    sprintf(HCR_buf, "GPO %d %d %d %d %d %d %d %d\r\n",
+    sprintf(HCR_buf, "GPO %d %d %d %d %d %d %d %d\n",
             (int)gpo_com[0], (int)gpo_com[1], (int)gpo_com[2], (int)gpo_com[3],
             (int)gpo_com[4], (int)gpo_com[5], (int)gpo_com[6], (int)gpo_com[7]);
 
-    send(HCR, HCR_buf, strlen(HCR_buf), 0);
+    send(HCR_fd, HCR_buf, strlen(HCR_buf), 0);
+    command_sent = true;
 
     RCLCPP_INFO(LOGGER, "Send command to HCR: %s", HCR_buf);
+    return return_type::OK;
   }
 
+  send(HCR_fd, GET_JOINTS, strlen(GET_JOINTS), 0);
+  RCLCPP_DEBUG(LOGGER, "Send JNT command to HCR");
+  command_sent = true;
   return return_type::OK;
 }
 

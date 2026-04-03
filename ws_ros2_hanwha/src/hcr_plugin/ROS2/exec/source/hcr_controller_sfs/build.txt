@@ -1,1 +1,0 @@
-cargo +nightly build --target i686-win7-windows-msvc -Z build-std --release
