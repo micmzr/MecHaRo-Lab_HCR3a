@@ -87,13 +87,12 @@ CallbackReturn RobotSystem::on_init(const hardware_interface::HardwareInfo & inf
   memset(&server_addr, 0, sizeof(server_addr));
   server_addr.sin_family = AF_INET;
 
-  // if (inet_pton( AF_INET, hcr_ip.c_str(),&server_addr.sin_addr) <= 0)
-  // {
-  //   RCLCPP_FATAL(LOGGER, "Invalid HCR IP address %s",hcr_ip.c_str());
+  if (inet_pton( AF_INET, hcr_ip.c_str(),&server_addr.sin_addr) <= 0)
+  {
+    RCLCPP_FATAL(LOGGER, "Invalid HCR IP address %s",hcr_ip.c_str());
 
-  //   return CallbackReturn::ERROR;
-  // }
-  server_addr.sin_addr.s_addr = INADDR_ANY;
+    return CallbackReturn::ERROR;
+  }
 
   if (hcr_port <= 0)
   {
@@ -111,46 +110,31 @@ CallbackReturn RobotSystem::on_init(const hardware_interface::HardwareInfo & inf
     return CallbackReturn::ERROR;
   }
 
-  if (bind(HCR, (struct sockaddr *)&server_addr, sizeof(server_addr)) < 0)
+  if (connect(HCR, (struct sockaddr *)&server_addr, sizeof(server_addr)) < 0)
   {
-    RCLCPP_FATAL(LOGGER, "Could not bind to HCR address");
+    RCLCPP_FATAL(LOGGER, "Could not connect to HCR system");
 
     return CallbackReturn::ERROR;
   }
-  
-  listen(HCR, 3);
-  RCLCPP_INFO(LOGGER, "Listening on port %d...\n", hcr_port);
 
-  struct sockaddr_in socket_addr;
-  int socket_addrlen = sizeof(socket_addr);
-  HCR_fd = accept(HCR, (struct sockaddr *)&socket_addr, (socklen_t *)&socket_addrlen);
-  RCLCPP_INFO(LOGGER, "Client connected from %s:%d\n", inet_ntoa(socket_addr.sin_addr), ntohs(socket_addr.sin_port));
-
-  // if (connect(HCR, (struct sockaddr *)&server_addr, sizeof(server_addr)) < 0)
-  // {
-  //   RCLCPP_FATAL(LOGGER, "Could not connect to HCR system");
-
-  //   return CallbackReturn::ERROR;
-  // }
-
-  // struct timeval timeout;
-  // timeout.tv_sec = 1; //SOCKET_READ_TIMEOUT_SEC;
-  // timeout.tv_usec = 0;
-  // setsockopt(HCR, SOL_SOCKET, SO_RCVTIMEO, &timeout, sizeof(timeout));
-
-  // HCR_fd = HCR;
+  struct timeval timeout;
+  timeout.tv_sec = 1; //SOCKET_READ_TIMEOUT_SEC;
+  timeout.tv_usec = 0;
+  setsockopt(HCR, SOL_SOCKET, SO_RCVTIMEO, &timeout, sizeof(timeout));
 
   int one = 1;
-  if (setsockopt(HCR_fd, IPPROTO_TCP, TCP_NODELAY, (void *)&one, sizeof(one)) < 0) 
+  if (setsockopt(HCR, IPPROTO_TCP, TCP_NODELAY, (void *)&one, sizeof(one)) < 0) 
   {
     RCLCPP_FATAL(LOGGER, "setsockopt(TCP_NODELAY) failed");
   }
 
   one = 1;
-  if (setsockopt(HCR_fd, IPPROTO_TCP, TCP_QUICKACK, &one, sizeof(one)) < 0) 
+  if (setsockopt(HCR, IPPROTO_TCP, TCP_QUICKACK, &one, sizeof(one)) < 0) 
   {
     RCLCPP_FATAL(LOGGER, "setsockopt TCP_QUICKACK) failed");
   }
+
+  HCR_fd = HCR;
 
   return CallbackReturn::SUCCESS;
 }
@@ -206,14 +190,14 @@ return_type RobotSystem::read(const rclcpp::Time & /*time*/, const rclcpp::Durat
   rclcpp::Time time_start = rclcpp::Clock().now();
   RCLCPP_INFO(LOGGER, "Send JNT command to HCR");
 
-  send(HCR_fd, GET_JOINTS, strlen(GET_JOINTS), 0);
+  send(HCR, GET_JOINTS, strlen(GET_JOINTS), 0);
  
   memset(HCR_buf, '\0', sizeof(HCR_buf));
 
   rclcpp::Time time_now = rclcpp::Clock().now();
   RCLCPP_INFO(LOGGER, "Send to HCR, time taken: %f sec", (time_now - time_start).seconds());
 
-  if (recv(HCR_fd, HCR_buf, sizeof(HCR_buf), 0) > 0)
+  if (recv(HCR, HCR_buf, sizeof(HCR_buf), 0) > 0)
   {
     RCLCPP_DEBUG(LOGGER, "Get data from HCR: %s", HCR_buf);
 
@@ -242,13 +226,13 @@ return_type RobotSystem::read(const rclcpp::Time & /*time*/, const rclcpp::Durat
   time_now = rclcpp::Clock().now();
   RCLCPP_INFO(LOGGER, "Get from HCR, time taken: %f sec", (time_now - time_start).seconds());
 
-  send(HCR_fd, GET_GPI, strlen(GET_GPI), 0);
+  send(HCR, GET_GPI, strlen(GET_GPI), 0);
   memset(HCR_buf, '\0', sizeof(HCR_buf));
 
   time_now = rclcpp::Clock().now();
   RCLCPP_INFO(LOGGER, "Send GPI to HCR, time taken: %f sec", (time_now - time_start).seconds());
 
-  if (recv(HCR_fd, HCR_buf, sizeof(HCR_buf), 0) > 0)
+  if (recv(HCR, HCR_buf, sizeof(HCR_buf), 0) > 0)
   {
     RCLCPP_DEBUG(LOGGER, "Get data from HCR: %s", HCR_buf);
 
@@ -309,7 +293,7 @@ return_type RobotSystem::write(const rclcpp::Time &, const rclcpp::Duration &)
             (float)(jnts_com[4] * 180.l / M_PI),
             (float)(jnts_com[5] * 180.l / M_PI));
 
-    send(HCR_fd, HCR_buf, strlen(HCR_buf), 0);
+    send(HCR, HCR_buf, strlen(HCR_buf), 0);
 
     RCLCPP_INFO(LOGGER, "Send command to HCR: %s", HCR_buf);
   }
@@ -336,7 +320,7 @@ return_type RobotSystem::write(const rclcpp::Time &, const rclcpp::Duration &)
             (int)gpo_com[0], (int)gpo_com[1], (int)gpo_com[2], (int)gpo_com[3],
             (int)gpo_com[4], (int)gpo_com[5], (int)gpo_com[6], (int)gpo_com[7]);
 
-    send(HCR_fd, HCR_buf, strlen(HCR_buf), 0);
+    send(HCR, HCR_buf, strlen(HCR_buf), 0);
 
     RCLCPP_INFO(LOGGER, "Send command to HCR: %s", HCR_buf);
   }
