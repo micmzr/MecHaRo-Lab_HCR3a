@@ -243,8 +243,8 @@ def generate_launch_description():
         launch_arguments={
             "gz_args": IfElseSubstitution(
                 gazebo_gui,
-                if_value=[" -r -v 4 ", word_file_path],
-                else_value=[" -s -r -v 4 ", word_file_path],
+                if_value=[" -r -v 4 --physics-engine gz-physics-bullet-featherstone-plugin ", word_file_path],
+                else_value=[" -s -r -v 4  --physics-engine gz-physics-bullet-featherstone-plugin ", word_file_path],
             )
         }.items(),
     )

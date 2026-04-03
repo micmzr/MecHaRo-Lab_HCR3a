@@ -3,7 +3,7 @@ controller_manager:
     update_rate: 20  # Hz
 
     gripper_controller:
-      type: position_controllers/GripperActionController    
+      type: joint_trajectory_controller/JointTrajectoryController 
 
     joint_state_broadcaster:
       type: joint_state_broadcaster/JointStateBroadcaster
@@ -86,16 +86,26 @@ gpio_controller:
           - D4
           - D5
           - D6
-          - D7
-    
+          - D7  
+
 gripper_controller:
- ros__parameters:
-   joint: finger1
-   action_monitor_rate: 20.0
-   goal_tolerance: 0.002
-   max_effort: 100.0
-   stall_velocity_threshold: 0.001
-   stall_timeout: 1.0      
+  ros__parameters:
+    joints:
+      - finger1
+      # - finger2
+    command_interfaces:
+      - position
+    state_interfaces:
+      - position
+    state_publish_rate: 100.0
+    action_monitor_rate: 100.0
+    allow_partial_joints_goal: false
+    constraints:
+      stopped_velocity_tolerance: 0.0
+      goal_time: 0.05
+      finger1: {trajectory: 0.1, goal: 0.1}
+      # finger2: {trajectory: 0.1, goal: 0.1}
+    stop_trajectory_duration: 0.5
 
 force_torque_sensor_broadcaster:
   ros__parameters:

@@ -92,7 +92,7 @@ gripper_controller:
   ros__parameters:
     joints:
       - finger1
-      - finger2
+      # - finger2
     command_interfaces:
       - position
     state_interfaces:
@@ -104,7 +104,7 @@ gripper_controller:
       stopped_velocity_tolerance: 0.0
       goal_time: 0.05
       finger1: {trajectory: 0.1, goal: 0.1}
-      finger2: {trajectory: 0.1, goal: 0.1}
+      # finger2: {trajectory: 0.1, goal: 0.1}
     stop_trajectory_duration: 0.5
 
 force_torque_sensor_broadcaster:

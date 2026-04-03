@@ -23,9 +23,7 @@
           <param name="initial_value">0.0</param>
         </state_interface>
       </joint>
-      <joint name="${prefix}finger2">
-        <!-- param name="mimic">${prefix}finger1</param>
-        <param name="multiplier">-1</param -->
+      <!-- joint name="${prefix}finger2">
         <command_interface name="position">
           <param name="min">-0.02557</param>
           <param name="max">0</param>
@@ -41,7 +39,7 @@
         <state_interface name="effort">
           <param name="initial_value">0.0</param>
         </state_interface>
-      </joint>      
+      </joint -->      
     </ros2_control>
   </xacro:macro>
 
