@@ -122,6 +122,18 @@ CallbackReturn RobotSystem::on_init(const hardware_interface::HardwareInfo & inf
   timeout.tv_usec = 0;
   setsockopt(HCR, SOL_SOCKET, SO_RCVTIMEO, &timeout, sizeof(timeout));
 
+  int one = 1;
+  if (setsockopt(HCR, IPPROTO_TCP, TCP_NODELAY, (void *)&one, sizeof(one)) < 0) 
+  {
+    RCLCPP_FATAL(LOGGER, "setsockopt(TCP_NODELAY) failed");
+  }
+
+  one = 1;
+  if (setsockopt(HCR, IPPROTO_TCP, TCP_QUICKACK, &one, sizeof(one)) < 0) 
+  {
+    RCLCPP_FATAL(LOGGER, "setsockopt TCP_QUICKACK) failed");
+  }
+
   HCR_fd = HCR;
 
   return CallbackReturn::SUCCESS;
@@ -175,10 +187,15 @@ std::vector<hardware_interface::CommandInterface> RobotSystem::export_command_in
 
 return_type RobotSystem::read(const rclcpp::Time & /*time*/, const rclcpp::Duration &/* period*/)
 {
-  RCLCPP_DEBUG(LOGGER, "Send JNT command to HCR");
+  rclcpp::Time time_start = rclcpp::Clock().now();
+  RCLCPP_INFO(LOGGER, "Send JNT command to HCR");
 
   send(HCR, GET_JOINTS, strlen(GET_JOINTS), 0);
+ 
   memset(HCR_buf, '\0', sizeof(HCR_buf));
+
+  rclcpp::Time time_now = rclcpp::Clock().now();
+  RCLCPP_INFO(LOGGER, "Send to HCR, time taken: %f sec", (time_now - time_start).seconds());
 
   if (recv(HCR, HCR_buf, sizeof(HCR_buf), 0) > 0)
   {
@@ -205,9 +222,15 @@ return_type RobotSystem::read(const rclcpp::Time & /*time*/, const rclcpp::Durat
   {
     RCLCPP_WARN(LOGGER, "Cant get data from HCR");
   }
+  
+  time_now = rclcpp::Clock().now();
+  RCLCPP_INFO(LOGGER, "Get from HCR, time taken: %f sec", (time_now - time_start).seconds());
 
   send(HCR, GET_GPI, strlen(GET_GPI), 0);
   memset(HCR_buf, '\0', sizeof(HCR_buf));
+
+  time_now = rclcpp::Clock().now();
+  RCLCPP_INFO(LOGGER, "Send GPI to HCR, time taken: %f sec", (time_now - time_start).seconds());
 
   if (recv(HCR, HCR_buf, sizeof(HCR_buf), 0) > 0)
   {
@@ -235,6 +258,9 @@ return_type RobotSystem::read(const rclcpp::Time & /*time*/, const rclcpp::Durat
   {
     RCLCPP_WARN(LOGGER, "Cant get data from HCR");
   }
+
+  time_now = rclcpp::Clock().now();
+  RCLCPP_INFO(LOGGER, "Get GPO from HCR, time taken: %f sec", (time_now - time_start).seconds());
 
   return return_type::OK;
 }
