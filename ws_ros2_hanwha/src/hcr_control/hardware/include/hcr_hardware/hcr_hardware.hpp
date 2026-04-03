@@ -69,8 +69,8 @@ protected:
   int HCR; 
   char HCR_buf[65536];
 
-  const char *GET_JOINTS = "JNT\n"; 
-  const char *GET_GPI = "GPI\n"; 
+  const char *GET_JOINTS = "JNT\r\n"; 
+  const char *GET_GPI = "GPI\r\n"; 
   double jnts_com[6];
   double gpo_com[6];
 

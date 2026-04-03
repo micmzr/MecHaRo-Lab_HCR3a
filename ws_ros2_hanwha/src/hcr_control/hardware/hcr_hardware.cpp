@@ -259,7 +259,7 @@ return_type RobotSystem::write(const rclcpp::Time &, const rclcpp::Duration &)
 
     memset(HCR_buf, '\0', sizeof(HCR_buf));
 
-    sprintf(HCR_buf, "MOV %7.2f %7.2f %7.2f %7.2f %7.2f %7.2f\n",
+    sprintf(HCR_buf, "MOV %7.2f %7.2f %7.2f %7.2f %7.2f %7.2f\r\n",
             (float)(jnts_com[0] * 180.l / M_PI),
             (float)(jnts_com[1] * 180.l / M_PI),
             (float)(jnts_com[2] * 180.l / M_PI),
@@ -290,7 +290,7 @@ return_type RobotSystem::write(const rclcpp::Time &, const rclcpp::Duration &)
 
     memset(HCR_buf, '\0', sizeof(HCR_buf));
 
-    sprintf(HCR_buf, "GPO %d %d %d %d %d %d %d %d\n",
+    sprintf(HCR_buf, "GPO %d %d %d %d %d %d %d %d\r\n",
             (int)gpo_com[0], (int)gpo_com[1], (int)gpo_com[2], (int)gpo_com[3],
             (int)gpo_com[4], (int)gpo_com[5], (int)gpo_com[6], (int)gpo_com[7]);
 

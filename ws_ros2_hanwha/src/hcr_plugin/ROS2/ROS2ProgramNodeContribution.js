@@ -76,7 +76,7 @@ class ROS2ProgramNodeContribution extends ProgramNodeContribution {
         enterWriter.appendLine("    });");
 
         enterWriter.appendLine("    socketOpen(SERVER_INFO.NAME);");
-        enterWriter.appendLine("    socketWaitConnection(SERVER_INFO.NAME, 500000);");
+        enterWriter.appendLine("    socketWaitConnection(SERVER_INFO.NAME, 5000);");
         enterWriter.appendLine("}");
 
         enterWriter.appendLine("function ProgramStart() {");
@@ -147,97 +147,6 @@ class ROS2ProgramNodeContribution extends ProgramNodeContribution {
         enterWriter.appendLine("ProgramStart();");
         enterWriter.appendLine("Finish();");
     }
-
-    /*
-    var SERVER_INFO = {
-    NAME: 'RODI_ROS2',
-    IP: '127.0.0.1',
-    PORT: 6668
-};
-
-function Init() {
-
-    externalMoveBegin();
-    sleep(1000);
-
-    socketCreate(SERVER_INFO.NAME, SERVER_INFO.IP, SERVER_INFO.PORT);
-
-    socketAddListener(SERVER_INFO.NAME, 'connection', function () {
-        message('>> connected');
-    });
-
-    socketAddListener(SERVER_INFO.NAME, 'close', function () {
-        message('>> disconnected');
-    });
-
-    socketOpen(SERVER_INFO.NAME);
-    socketWaitConnection(SERVER_INFO.NAME, 500000);
-}
-
-function ProgramStart() {
-	
-	 var ROS_JNTS = getCurrentJoint();
-	 
-    while (true) {
-        var arr = socketReadLine(SERVER_INFO.NAME,1);
-			
-				//message('>> in the loop...', arr.length, arr);
-
-        if (arr.length < 1) {
-            continue;
-        }
-			
-				if (arr == 'JNT') {
-            let J = getCurrentJoint();
-					
-            var result = 'JNT ' + J[0].toPrecision(5) + ' ' + J[1].toPrecision(5) + ' ' + J[2].toPrecision(5) + ' ' + J[3].toPrecision(5) + ' ' + J[4].toPrecision(5) + ' ' + J[5].toPrecision(5);
-
-            socketSendLine(SERVER_INFO.NAME, result);
-        }
-
-        else if (arr.slice(0,3) == 'MOV') {
-            ROS_JNTS[0] = parseFloat(arr.slice(4, 10));
-            ROS_JNTS[1] = parseFloat(arr.slice(12, 18));
-            ROS_JNTS[2] = parseFloat(arr.slice(20, 26));
-            ROS_JNTS[3] = parseFloat(arr.slice(28, 34));
-            ROS_JNTS[4] = parseFloat(arr.slice(36, 42));
-            ROS_JNTS[5] = parseFloat(arr.slice(44, 51));
-
-            externalMoveJoint(ROS_JNTS, 50);
-        }
-
-        else if (arr == 'GPI')
-        {
-						var result  = 'GPI ' + 		getGeneralDigitalInput(0 ) + ' '+ getGeneralDigitalInput(1 ) + ' ' +getGeneralDigitalInput(2 ) + ' ' + getGeneralDigitalInput(3 ) + ' ' + getGeneralDigitalInput(4 ) + ' ' + getGeneralDigitalInput(5 ) + ' ' + getGeneralDigitalInput(6) + ' ' + getGeneralDigitalInput(7);
-						socketSendLine(SERVER_INFO.NAME, result);
-				}
-			
-				else if (arr.slice(0,3) == 'GPO')
-        {
-					setGeneralDigitalOutput(0, parseInt(arr.slice(4,5)));
-					setGeneralDigitalOutput(1, parseInt(arr.slice(6,7)));
-					setGeneralDigitalOutput(2, parseInt(arr.slice(8,9)));
-					setGeneralDigitalOutput(3, parseInt(arr.slice(10,11)));
-					setGeneralDigitalOutput(4, parseInt(arr.slice(12,13)));
-					setGeneralDigitalOutput(5, parseInt(arr.slice(14,15)));
-					setGeneralDigitalOutput(6, parseInt(arr.slice(16,17)));
-					setGeneralDigitalOutput(7, parseInt(arr.slice(18,19)));
-				}
-				
-
-    } 
-}
-
-function Finish() {
-    socketDisconnect(SERVER_INFO.NAME);
-    sleep(100);
-    externalMoveEnd();
-    sleep(100);
-}
-
-Init();
-ProgramStart();
-Finish();*/
 
     isDefined(){
         return true;
