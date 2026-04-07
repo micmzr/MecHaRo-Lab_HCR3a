@@ -15,34 +15,13 @@
   <xacro:gripper_ros2_control prefix=""/>
   <xacro:include filename="$(find hcr3a)/urdf/gz_ft_sensor.ros2_control.xacro" />
   <xacro:ft_sensor_ros2_control prefix=""/>
-  <!-- Camera d435 used instead of d415 -->
-  <!-- <xacro:include filename="$(find realsense2_description)/urdf/_d415.urdf.xacro" />
-  <xacro:sensor_d415
-      name="camera"
-      parent="camera_Link"
-      use_nominal_extrinsics="false"
-      add_plug="false"
-      use_mesh="true">
-      <origin xyz="0 0.0095 0.011" rpy="${M_PI} 0 -${M_PI/2}"/>
-  </xacro:sensor_d415> -->
-
-<!-- MONOCULAR CAMERA -->
+  <!-- Camera d415 -->
 <joint name="camera_joint" type="fixed">
-  <!-- <origin xyz="-0.1 0 0.06" rpy="0 0 ${PI}"/> -->
-  <origin xyz="0 0.0095 0.011" rpy="${M_PI} 0 -${M_PI/2}"/>
+  <origin xyz="0 0 0" rpy="${M_PI} 0 ${-M_PI/2}"/>
   <parent link="camera_Link"/>
   <child link="camera_frame"/>
 </joint>
 <link name="camera_frame">
-  <!-- <visual>
-    <origin xyz="0 0 0" rpy="0 0 0"/>
-    <geometry>
-      <mesh filename="package://${package_name}/meshes/d435.dae" scale="1.0 1.0 1.0"/>
-    </geometry>
-    <material name="white">
-      <color rgba="0.9 0.9 0.9 1.0"/>
-    </material>
-  </visual> -->
 </link>
 
 <gazebo reference="camera_frame">
@@ -50,7 +29,7 @@
     <ignition_frame_id>camera_frame</ignition_frame_id>
     <optical_frame_id>camera_frame</optical_frame_id>
     <camera>
-      <horizontal_fov>1.085595</horizontal_fov>
+      <horizontal_fov>1.20427718</horizontal_fov>
       <image>
         <width>1920</width>
         <height>1080</height>
@@ -59,16 +38,8 @@
       <camera_info_topic>camera/camera_info</camera_info_topic>
       <clip>
         <near>0.1</near>
-        <far>10</far>
+        <far>100</far>
       </clip>
-    <distortion>
-        <k1>0.096559</k1>
-        <k2>-0.237840</k2>
-        <k3>0.113659</k3>
-        <p1>0.000396</p1>
-        <p2>0.000247</p2>
-        <center>0.5 0.5</center>
-      </distortion>
     </camera>
     <always_on>1</always_on>
     <update_rate>10</update_rate>
@@ -80,23 +51,11 @@
 
 <!-- RGBD CAMERA -->
 <joint name="rgbd_camera_joint" type="fixed">
-    <!-- <origin xyz="0.05 0 0.06" rpy="0 0 0"/> -->
-  <!-- <origin xyz="-0.1 0 0.06" rpy="0 0 ${PI}"/> -->
-  <!-- orgin should be corrected  -->
-  <origin xyz="0 0.0095 0.011" rpy="${M_PI} 0 -${M_PI/2}"/>
+  <origin xyz="0 0 0" rpy="${M_PI} 0 ${-M_PI/2}"/>
   <parent link="camera_Link"/>
   <child link="rgbd_camera_frame"/>
 </joint>
 <link name="rgbd_camera_frame">
-  <!-- <visual>
-    <origin xyz="0 0 0" rpy="0 0 0"/>
-    <geometry>
-      <mesh filename="package://${package_name}/meshes/d435.dae" scale="1.0 1.0 1.0"/>
-    </geometry>
-    <material name="white">
-      <color rgba="0.9 0.9 0.9 1.0"/>
-    </material>
-  </visual>  -->
 </link>
 
 <gazebo reference="rgbd_camera_frame">
@@ -104,23 +63,6 @@
     <ignition_frame_id>rgbd_camera_frame</ignition_frame_id>
     <camera name="rgbd_camera_frame">
       <horizontal_fov>1.3962634</horizontal_fov>
-      <lens>
-        <intrinsics>
-          <fx>277.1</fx>
-          <fy>277.1</fy>
-          <cx>160.5</cx>
-          <cy>120.5</cy>
-          <s>0</s>
-        </intrinsics>
-      </lens>
-      <distortion>
-        <k1>0.104207</k1>
-        <k2>-0.255558</k2>
-        <k3>0.128694</k3>
-        <p1>0.000512</p1>
-        <p2>0.000319</p2>
-        <center>0.5 0.5</center>
-      </distortion>
       <image>
         <width>1280</width>
         <height>720</height>
