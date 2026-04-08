@@ -277,6 +277,13 @@ def generate_launch_description():
         parameters=[{'use_sim_time': use_sim_time}],
     )
 
+    gpio_controller_spawner = Node(
+        package="controller_manager",
+        executable="spawner",
+        arguments=["gpio_controller","-c","/controller_manager"],
+        parameters=[{'use_sim_time': use_sim_time}],
+    )
+
     nodes_to_start = [
         control_node,
         robot_state_publisher_node,
@@ -284,7 +291,8 @@ def generate_launch_description():
         joint_state_broadcaster_spawner,
         initial_joint_controller_spawner,
         gripper_controller_spawner,
-        force_torque_sensor_broadcaster_spawner
+        force_torque_sensor_broadcaster_spawner,
+        gpio_controller_spawner
     ]
 
     return LaunchDescription(declared_arguments + nodes_to_start)
