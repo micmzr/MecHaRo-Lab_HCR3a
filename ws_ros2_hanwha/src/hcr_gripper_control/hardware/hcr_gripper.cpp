@@ -120,15 +120,15 @@ CallbackReturn Gripper::on_configure(const rclcpp_lifecycle::State & /*previous_
 
         interface_value.interface_names.push_back("D0");
         if( command == true ) 
-          interface_value.values.push_back(0.0);
-        else
           interface_value.values.push_back(1.0);
+        else
+          interface_value.values.push_back(0.0);
 
         interface_value.interface_names.push_back("D1");
         if( command == true ) 
-          interface_value.values.push_back(1.0);
-        else
           interface_value.values.push_back(0.0);
+        else
+          interface_value.values.push_back(1.0);
 
         msg.interface_values.push_back(interface_value);
         
