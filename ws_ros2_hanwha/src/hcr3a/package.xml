@@ -18,11 +18,9 @@
       <exec_depend>robot_state_publisher</exec_depend>
       <exec_depend>joint_state_publisher_gui</exec_depend>
       <exec_depend>realsense2_description</exec_depend>
-      <exec_depend>realsense2_camera</exec_depend>
-      <exec_depend>gripper_controllers</exec_depend>
+      <exec_depend>parallel_gripper_controller</exec_depend>
       <exec_depend>octomap_rviz_plugins</exec_depend>
       <exec_depend>octomap_ros</exec_depend>
-      <exec_depend>octomap</exec_depend>
       <exec_depend>moveit_visual_tools</exec_depend>
       <exec_depend>moveit_ros_perception</exec_depend>
       <exec_depend>moveit_ros_occupancy_map_monitor</exec_depend>
@@ -36,11 +34,9 @@
       <exec_depend>moveit_planners_ompl</exec_depend>
       <exec_depend>moveit_planners_stomp</exec_depend>
       <exec_depend>moveit_plugins</exec_depend>
-      <exec_depend>effort_controllers</exec_depend>
       <exec_depend>joint_limits</exec_depend>
-      <exec_depend>position_controllers</exec_depend>
       <exec_depend>ros2_controllers</exec_depend>
-      <exec_depend>velocity_controllers</exec_depend>
+      <exec_depend>forward_command_controller</exec_depend>
       
       <exec_depend>moveit_ros_move_group</exec_depend>
       <exec_depend>moveit_kinematics</exec_depend>
