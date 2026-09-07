@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.8)
+cmake_minimum_required(VERSION 3.12)
 project(hcr_control LANGUAGES CXX)
 
 if(CMAKE_CXX_COMPILER_ID MATCHES "(GNU|Clang)")
@@ -42,15 +42,23 @@ add_library(
   hardware/hcr_hardware.cpp
 )
 
+set(ALL_TARGET_DEPENDS
+  pluginlib::pluginlib
+  rcpputils::rcpputils
+  hardware_interface::hardware_interface
+  controller_interface::controller_interface
+  realtime_tools::realtime_tools
+  trajectory_msgs::trajectory_msgs
+)
+
 target_compile_features(hcr_control PUBLIC cxx_std_17)
 target_include_directories(hcr_control PUBLIC
 $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/hardware/include>
 $<INSTALL_INTERFACE:include/hcr_control>
 )
-ament_target_dependencies(
+target_link_libraries(
   hcr_control PUBLIC
-  ${HW_IF_INCLUDE_DEPENDS}
-  ${CONTROLLER_INCLUDE_DEPENDS}
+  ${ALL_TARGET_DEPENDS}
 )
 
 # Causes the visibility macros to use dllexport rather than dllimport,

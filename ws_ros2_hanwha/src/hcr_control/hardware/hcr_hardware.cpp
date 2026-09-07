@@ -27,12 +27,14 @@ namespace hcr_control
 
 static const rclcpp::Logger LOGGER = rclcpp::get_logger("HCRSystemHardware");
 
-CallbackReturn RobotSystem::on_init(const hardware_interface::HardwareInfo & info)
+CallbackReturn RobotSystem::on_init(const  hardware_interface::HardwareComponentParams & params)
 {
   if (hardware_interface::SystemInterface::on_init(info) != CallbackReturn::SUCCESS)
   {
     return CallbackReturn::ERROR;
   }
+
+  auto info_ = params.hardware_info;
 
   // robot has 6 joints and 2 interfaces
   joint_position_.assign(6, 0);
