@@ -15,6 +15,7 @@ find_package(tf2_kdl REQUIRED)
 find_package(tf2_eigen REQUIRED)
 find_package(LAPACK REQUIRED)
 find_package(generate_parameter_library REQUIRED)
+find_package(orocos_kdl REQUIRED)
 
 include_directories(include)
 
@@ -26,15 +27,14 @@ generate_parameter_library(
 set(IKFAST_LIBRARY_NAME hcr3a_manipulator_moveit_ikfast_plugin)
 add_library(${IKFAST_LIBRARY_NAME} SHARED
             src/hcr3a_manipulator_ikfast_moveit_plugin.cpp)
-ament_target_dependencies(
+target_link_libraries(
   ${IKFAST_LIBRARY_NAME}
-  rclcpp
-  moveit_core
-  pluginlib
-  tf2_kdl
-  orocos_kdl
-  tf2_eigen
-  LAPACK)
+  rclcpp::rclcpp
+  moveit_core::moveit_core
+  pluginlib::pluginlib
+  tf2_kdl::tf2_kdl
+  tf2_eigen::tf2_eigen
+  LAPACK::LAPACK)
 # suppress warnings about unused variables in OpenRave's solver code
 target_compile_options(${IKFAST_LIBRARY_NAME} PRIVATE -Wno-unused-variable
                                                       -Wno-unused-parameter)

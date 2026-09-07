@@ -27,9 +27,9 @@ namespace hcr_control
 
 static const rclcpp::Logger LOGGER = rclcpp::get_logger("HCRSystemHardware");
 
-CallbackReturn RobotSystem::on_init(const  hardware_interface::HardwareComponentParams & params)
+CallbackReturn RobotSystem::on_init(const  hardware_interface::HardwareComponentInterfaceParams& params)
 {
-  if (hardware_interface::SystemInterface::on_init(info) != CallbackReturn::SUCCESS)
+  if (hardware_interface::SystemInterface::on_init(params) != CallbackReturn::SUCCESS)
   {
     return CallbackReturn::ERROR;
   }
