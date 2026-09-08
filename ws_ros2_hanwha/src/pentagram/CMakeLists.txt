@@ -5,6 +5,10 @@ if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   add_compile_options(-Wall -Wextra -Wpedantic)
 endif()
 
+if(NOT CMAKE_CXX_STANDARD)
+  set(CMAKE_CXX_STANDARD 20)
+endif()
+
 # find dependencies
 find_package(ament_cmake REQUIRED)
 find_package(moveit_ros_planning_interface REQUIRED)
@@ -15,7 +19,6 @@ add_executable(pentagram src/pentagram.cpp)
 target_include_directories(pentagram PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
   $<INSTALL_INTERFACE:include>)
-target_compile_features(pentagram PUBLIC c_std_99 cxx_std_17)  # Require C99 and C++17
 target_link_libraries(
   pentagram PUBLIC
   moveit_ros_planning_interface::moveit_ros_planning_interface

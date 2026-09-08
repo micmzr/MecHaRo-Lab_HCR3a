@@ -200,10 +200,9 @@ int main(int argc, char *argv[])
   // Execute the plan
   if (success)
   {
-    const double jump_threshold = 0.0;
     const double eef_step = 0.1;
     moveit_msgs::msg::RobotTrajectory cart_trajectory;
-    double fraction = move_group_interface.computeCartesianPath(waypoints, eef_step, jump_threshold, cart_trajectory);
+    double fraction = move_group_interface.computeCartesianPath(waypoints, eef_step, cart_trajectory);
     RCLCPP_INFO(logger, "Visualizing plan 4 (Cartesian path) (%.2f%% achieved)", fraction * 100.0);
 
     moveit::planning_interface::MoveGroupInterface::Plan cart_plan;
