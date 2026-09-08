@@ -3,7 +3,8 @@
   <xacro:property name="M_PI" value="3.1415926535897931" />
   <xacro:macro name="hcr3a" params="prefix">
   <!-- link list -->
-  <link name="${prefix}base_link">
+  <link name="${prefix}base_link"/>
+  <link name="${prefix}real_base_link">
     <inertial>
       <origin xyz="7.97584139442861E-05 -0.0005270967790151 0.016153272685018" rpy="0 0 0" />
       <mass value="0.353281534288237" />
@@ -296,9 +297,14 @@
 
     <!-- end of link list -->
 
+  <joint name="${prefix}joint_0" type="fixed">
+    <origin xyz="0 0 0.0" rpy="0 0 0" />
+    <parent link="${prefix}base_link" />
+    <child link="${prefix}real_base_link" />
+  </joint>
   <joint name="${prefix}joint_1" type="revolute">
     <origin xyz="0 0 0.03769" rpy="1.5708 0 1.5708" />
-    <parent link="${prefix}base_link" />
+    <parent link="${prefix}real_base_link" />
     <child link="${prefix}link_1" />
     <axis xyz="0 1 0"  />
     <limit lower="-6.2832" upper="6.2832" effort="150.0" velocity="3.1416" />

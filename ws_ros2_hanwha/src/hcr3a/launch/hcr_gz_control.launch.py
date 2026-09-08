@@ -182,7 +182,7 @@ def generate_launch_description():
             "--controller-manager",
             "/controller_manager",
         ],
-        parameters=[{'use_sim_time': use_sim_time}],
+        parameters=[{'use_sim_time': use_sim_time}, robot_controllers],
     )
 
     delay_rviz_after_joint_state_broadcaster_spawner = RegisterEventHandler(
@@ -204,14 +204,14 @@ def generate_launch_description():
         package="controller_manager",
         executable="spawner",
         arguments=["gripper_controller", "-c", "/controller_manager"],
-        parameters=[{'use_sim_time': use_sim_time}],
+        parameters=[{'use_sim_time': use_sim_time}, robot_controllers],
     )
 
     force_torque_sensor_broadcaster_spawner = Node(
         package="controller_manager",
         executable="spawner",
         arguments=["force_torque_sensor_broadcaster","-c","/controller_manager"],
-        parameters=[{'use_sim_time': use_sim_time}],
+        parameters=[{'use_sim_time': use_sim_time}, robot_controllers],
     )
 
     # gpio_controller_spawner = Node(
