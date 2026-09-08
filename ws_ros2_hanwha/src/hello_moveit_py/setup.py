@@ -16,15 +16,10 @@ setup(
     ],
     install_requires=['setuptools'],
     zip_safe=True,
-    maintainer='mmazur',
-    maintainer_email='mmazur@todo.todo',
-    description='TODO: Package description',
-    license='TODO: License declaration',
-    extras_require={
-        'test': [
-            'pytest',
-        ],
-    },
+    maintainer='Michał Mazur',
+    maintainer_email='micmazur@pg.edu.pl',
+    description='Simple MoveIt2 Python example for HCR3a robot',
+    license='Apache License 2.0',
     entry_points={
         'console_scripts': [
             'hello_moveit_py = hello_moveit_py.hello_moveit_py:main'

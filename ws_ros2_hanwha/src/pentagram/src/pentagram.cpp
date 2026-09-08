@@ -1,10 +1,11 @@
+#include <chrono>
 #include <thread>
 #include <memory>
 
 #include <rclcpp/rclcpp.hpp>
-#include <moveit/move_group_interface/move_group_interface.h>
+#include <moveit/move_group_interface/move_group_interface.hpp>
 #include <moveit_visual_tools/moveit_visual_tools.h>
-#include <moveit/planning_scene_interface/planning_scene_interface.h>
+#include <moveit/planning_scene_interface/planning_scene_interface.hpp>
 
 #define _USE_MATH_DEFINES
 #include <cmath>
@@ -225,7 +226,7 @@ int main(int argc, char *argv[])
     RCLCPP_ERROR(logger, "Planning failed!");
   }
 
-  sleep(10);
+  std::this_thread::sleep_for(std::chrono::seconds(10));
 
   // Shutdown ROS
   rclcpp::shutdown();

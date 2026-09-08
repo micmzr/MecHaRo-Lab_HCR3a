@@ -1,5 +1,7 @@
-cmake_minimum_required(VERSION 3.22)
+cmake_minimum_required(VERSION 3.30)
 project(hcr3a_manipulator_ikfast_plugin)
+
+if(NOT WIN32)
 
 if(NOT "${CMAKE_CXX_STANDARD}")
   set(CMAKE_CXX_STANDARD 14)
@@ -60,3 +62,7 @@ ament_export_dependencies(tf2_kdl)
 ament_export_dependencies(tf2_eigen)
 ament_export_dependencies(generate_parameter_library)
 ament_package()
+
+else()
+  message(STATUS "Skipping ${PROJECT_NAME} because compilation is disabled on Windows.")
+endif()

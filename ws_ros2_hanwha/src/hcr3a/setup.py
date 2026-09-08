@@ -21,11 +21,10 @@ setup(
     ],
     install_requires=['setuptools'],
     zip_safe=True,
-    maintainer='ros-industrial',
-    maintainer_email='TODO:',
-    description='TODO: Package description',
-    license='TODO: License declaration',
-    tests_require=['pytest'],
+    maintainer='Michał Mazur',
+    maintainer_email='micmazur@pg.edu.pl',
+    description='HCR3a robot description and simulation package',
+    license='Apache License 2.0',
     entry_points={
         'console_scripts': [
         ],
