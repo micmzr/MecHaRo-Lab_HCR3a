@@ -54,5 +54,5 @@ ros2 launch hcr3a hcr_moveit.launch.py use_sim_time:=true
 **_Python MoveIT example_**
 
 ``` bash
-ros2 launch hcr3a hcr_moveit.launch.py use_sim_time:=true 
+ros2 launch hello_moveit_py hello_moveit.launch.py use_sim_time:=true
 ```

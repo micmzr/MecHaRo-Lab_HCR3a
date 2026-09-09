@@ -197,7 +197,7 @@ def generate_launch_description():
         package="controller_manager",
         executable="spawner",
         arguments=[initial_joint_controller, "-c", "/controller_manager"],
-        parameters=[{'use_sim_time': use_sim_time}],
+        parameters=[{'use_sim_time': use_sim_time}, robot_controllers],
     )
 
     gripper_controller_spawner = Node(

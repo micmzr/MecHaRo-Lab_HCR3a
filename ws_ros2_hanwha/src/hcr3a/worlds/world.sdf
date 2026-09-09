@@ -26,9 +26,9 @@
       name="gz::sim::systems::ForceTorque">
     </plugin>
     <plugin
-      filename="libignition-gazebo-sensors-system.so"
-      name="ignition::gazebo::systems::Sensors">
-      <render_engine>ogre2</render_engine>
+      filename="gz-sim-sensors-system"
+       name="gz::sim::systems::Sensors">
+    <render_engine>ogre2</render_engine>
     </plugin>
 
     <light type="directional" name="sun">

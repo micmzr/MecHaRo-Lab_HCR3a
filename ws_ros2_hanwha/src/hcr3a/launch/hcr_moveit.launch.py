@@ -39,63 +39,6 @@ def launch_setup(context, *args, **kwargs):
     not_only_rviz = LaunchConfiguration("not_only_rviz")
     use_sim_time = LaunchConfiguration('use_sim_time', default='false')
 
-    # # Planning context
-    # robot_description_content = Command(
-    #     [
-    #         PathJoinSubstitution([FindExecutable(name="xacro")]),
-    #         " ",
-    #         PathJoinSubstitution(
-    #             [FindPackageShare(support_package), "urdf", robot_xacro_file]
-    #         ),
-    #     ]
-    # )
-    # robot_description = {"robot_description": robot_description_content}
-
-    # robot_description_semantic_content = Command(
-    #     [
-    #         PathJoinSubstitution([FindExecutable(name="xacro")]),
-    #         " ",
-    #         PathJoinSubstitution(
-    #             [FindPackageShare(moveit_config_package), "config", moveit_config_file]
-    #         ),
-    #     ]
-    # )
-    # robot_description_semantic = {
-    #     "robot_description_semantic": robot_description_semantic_content.perform(
-    #         context
-    #     )
-    # }
-
-    # kinematics_yaml = load_yaml(
-    #     "hcr3a", "config/kinematics.yaml"
-    # )
-
-    # joint_limits_yaml = {
-    #     "robot_description_planning": load_yaml(
-    #         moveit_config_package.perform(context), "config/joint_limits.yaml"
-    #     )
-    # }
-
-    # # Planning Functionality
-    # ompl_planning_pipeline_config = {
-    #     "move_group": {
-    #         "planning_plugin": "ompl_interface/OMPLPlanner",
-    #         "request_adapters": """default_planner_request_adapters/AddTimeOptimalParameterization default_planner_request_adapters/ResolveConstraintFrames default_planner_request_adapters/FixWorkspaceBounds default_planner_request_adapters/FixStartStateBounds default_planner_request_adapters/FixStartStateCollision default_planner_request_adapters/FixStartStatePathConstraints""",
-    #         "start_state_max_bounds_error": 0.1,
-    #     }
-    # }
-    # ompl_planning_yaml = load_yaml(
-    #     "hcr3a", "config/ompl_planning.yaml"
-    # )
-
-    # ompl_planning_pipeline_config["move_group"].update(ompl_planning_yaml)
-
-    # octomap_config = {'octomap_frame': 'camera_link', 
-    #                   'octomap_resolution': 0.01,
-    #                   'max_range': 1.5}
-
-    # octomap_updater_config = load_yaml('hcr3a', 'config/sensors_3d_2.yaml')
-
     # MoveIt configuration
     moveit_config = (
         MoveItConfigsBuilder(
@@ -154,6 +97,17 @@ def launch_setup(context, *args, **kwargs):
                 "joint_limits.yaml",
             )
         )
+        .sensors_3d(
+            file_path=os.path.join(
+                get_package_share_directory(f"{moveit_config_package.perform(context)}"),
+                "config",
+                "sensors_3d.yaml", # Ensure this file exists, even if empty or configured to 'none'
+            )
+        )
+        .planning_pipelines(
+            default_planning_pipeline="ompl",
+            pipelines=["ompl", "pilz_industrial_motion_planner"]
+        )
         .to_moveit_configs()
     )
 
@@ -166,21 +120,6 @@ def launch_setup(context, *args, **kwargs):
         "moveit_controller_manager": "moveit_simple_controller_manager/MoveItSimpleControllerManager",
     }
 
-    # trajectory_execution = {
-    #     # MoveIt does not handle controller switching automatically
-    #     "moveit_manage_controllers": False,
-    #     "trajectory_execution.allowed_execution_duration_scaling": 1.2,
-    #     "trajectory_execution.allowed_goal_duration_margin": 0.5,
-    #     "trajectory_execution.allowed_start_tolerance": 0.01,
-    # }
-
-    # planning_scene_monitor_parameters = {
-    #     "publish_planning_scene": True,
-    #     "publish_geometry_updates": True,
-    #     "publish_state_updates": True,
-    #     "publish_transforms_updates": True,
-    # }
-
     # Start the actual move_group node/action server
     move_group_node = Node(
         package="moveit_ros_move_group",
@@ -192,16 +131,6 @@ def launch_setup(context, *args, **kwargs):
             moveit_config.trajectory_execution,
             moveit_controllers,
             moveit_config.to_dict(),
-            # robot_description,
-            # robot_description_semantic,
-            # kinematics_yaml,
-            # ompl_planning_pipeline_config,
-            # trajectory_execution,
-            # moveit_controllers,
-            # planning_scene_monitor_parameters,
-            # joint_limits_yaml,
-            # octomap_config,
-            # octomap_updater_config
         ],
     )
 
@@ -220,11 +149,6 @@ def launch_setup(context, *args, **kwargs):
         parameters=[
             {'use_sim_time': use_sim_time},
             moveit_config.to_dict(),
-            # robot_description,
-            # robot_description_semantic,
-            # ompl_planning_pipeline_config,
-            # kinematics_yaml,
-            # joint_limits_yaml,
         ],
     )
 
