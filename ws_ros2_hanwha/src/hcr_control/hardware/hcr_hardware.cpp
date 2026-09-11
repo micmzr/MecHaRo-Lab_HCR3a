@@ -165,7 +165,7 @@ CallbackReturn RobotSystem::on_init(const  hardware_interface::HardwareComponent
   return CallbackReturn::SUCCESS;
 }
 
-CallbackReturn RobotSystem::on_shutdown(const rclcpp_lifecycle::State & previous_state)
+CallbackReturn RobotSystem::on_shutdown([[maybe_unused]]const rclcpp_lifecycle::State & previous_state)
 {
 #ifdef _WIN32
 closesocket(HCR);
