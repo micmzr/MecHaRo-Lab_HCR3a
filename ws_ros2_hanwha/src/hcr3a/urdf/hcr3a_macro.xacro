@@ -15,7 +15,7 @@
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="file://$(find hcr3a)/meshes/visual/base_link.STL" />
+        <mesh filename="package://hcr3a/meshes/visual/base_link.STL" />
       </geometry>
       <material name="">
         <color rgba="0.156862 0.156862 0.156862 1" />
@@ -24,7 +24,7 @@
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="file://$(find hcr3a)/meshes/visual/base_link.STL" />
+        <mesh filename="package://hcr3a/meshes/visual/base_link.STL" />
       </geometry>
     </collision>
   </link>
@@ -39,7 +39,7 @@
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="file://$(find hcr3a)/meshes/visual/Link_1.STL" />
+        <mesh filename="package://hcr3a/meshes/visual/Link_1.STL" />
       </geometry>
       <material name="">
         <color rgba="0.156862 0.156862 0.156862 1" />
@@ -48,7 +48,7 @@
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="file://$(find hcr3a)/meshes/visual/Link_1.STL" />
+        <mesh filename="package://hcr3a/meshes/visual/Link_1.STL" />
       </geometry>
     </collision>
   </link>
@@ -63,7 +63,7 @@
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="file://$(find hcr3a)/meshes/visual/Link_2.STL" />
+        <mesh filename="package://hcr3a/meshes/visual/Link_2.STL" />
       </geometry>
       <material name="">
         <color rgba="0.156862 0.156862 0.156862 1" />
@@ -72,7 +72,7 @@
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="file://$(find hcr3a)/meshes/visual/Link_2.STL" />
+        <mesh filename="package://hcr3a/meshes/visual/Link_2.STL" />
       </geometry>
     </collision>
   </link>
@@ -87,7 +87,7 @@
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="file://$(find hcr3a)/meshes/visual/Link_3.STL" />
+        <mesh filename="package://hcr3a/meshes/visual/Link_3.STL" />
       </geometry>
       <material
         name="">
@@ -97,7 +97,7 @@
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="file://$(find hcr3a)/meshes/visual/Link_3.STL" />
+        <mesh filename="package://hcr3a/meshes/visual/Link_3.STL" />
       </geometry>
     </collision>
   </link>
@@ -112,7 +112,7 @@
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="file://$(find hcr3a)/meshes/visual/Link_4.STL" />
+        <mesh filename="package://hcr3a/meshes/visual/Link_4.STL" />
       </geometry>
       <material name="">
         <color rgba="1 0.45490196 0 1" />
@@ -121,7 +121,7 @@
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="file://$(find hcr3a)/meshes/visual/Link_4.STL" />
+        <mesh filename="package://hcr3a/meshes/visual/Link_4.STL" />
       </geometry>
     </collision>
   </link>
@@ -136,7 +136,7 @@
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="file://$(find hcr3a)/meshes/visual/Link_5.STL" />
+        <mesh filename="package://hcr3a/meshes/visual/Link_5.STL" />
       </geometry>
       <material name="">
         <color rgba="1 0.45490196 0 1" />
@@ -146,7 +146,7 @@
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="file://$(find hcr3a)/meshes/visual/Link_5.STL" />
+          filename="package://hcr3a/meshes/visual/Link_5.STL" />
       </geometry>
     </collision>
   </link>
@@ -161,7 +161,7 @@
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="file://$(find hcr3a)/meshes/visual/Link_6.STL" />
+        <mesh filename="package://hcr3a/meshes/visual/Link_6.STL" />
       </geometry>
       <material name="">
         <color rgba="1 1 1 1" />
@@ -170,7 +170,7 @@
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="file://$(find hcr3a)/meshes/visual/Link_6.STL" />
+        <mesh filename="package://hcr3a/meshes/visual/Link_6.STL" />
       </geometry>
     </collision>
   </link>
@@ -185,7 +185,7 @@
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="file://$(find hcr3a)/meshes/visual/Camera_Link.STL" />
+        <mesh filename="package://hcr3a/meshes/visual/Camera_Link.STL" />
       </geometry>
       <material name="">
         <color rgba="0.752941176470588 0.752941176470588 0.752941176470588 1" />
@@ -194,7 +194,7 @@
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="file://$(find hcr3a)/meshes/visual/Camera_Link.STL" />
+        <mesh filename="package://hcr3a/meshes/visual/Camera_Link.STL" />
       </geometry>
     </collision>
   </link>
@@ -209,7 +209,7 @@
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="file://$(find hcr3a)/meshes/visual/Forcesensor_Link.STL" />
+        <mesh filename="package://hcr3a/meshes/visual/Forcesensor_Link.STL" />
       </geometry>
       <material name="">
         <color rgba="0.666666666666667 0.698039215686274 0.768627450980392 1" />
@@ -218,7 +218,7 @@
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="file://$(find hcr3a)/meshes/visual/Forcesensor_Link.STL" />
+        <mesh filename="package://hcr3a/meshes/visual/Forcesensor_Link.STL" />
       </geometry>
     </collision>
   </link>
@@ -233,7 +233,7 @@
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="file://$(find hcr3a)/meshes/visual/Effector_Link.STL" />
+        <mesh filename="package://hcr3a/meshes/visual/Effector_Link.STL" />
       </geometry>
       <material name="">
         <color rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
@@ -242,7 +242,7 @@
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="file://$(find hcr3a)/meshes/visual/Effector_Link.STL" />
+        <mesh filename="package://hcr3a/meshes/visual/Effector_Link.STL" />
       </geometry>
     </collision>
   </link>
@@ -257,7 +257,7 @@
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="file://$(find hcr3a)/meshes/visual/Finger1_Link.STL" />
+        <mesh filename="package://hcr3a/meshes/visual/Finger1_Link.STL" />
       </geometry>
       <material name="">
         <color rgba="0.156862 0.156862 0.156862 1" />
@@ -266,7 +266,7 @@
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="file://$(find hcr3a)/meshes/visual/Finger1_Link.STL" />
+        <mesh filename="package://hcr3a/meshes/visual/Finger1_Link.STL" />
       </geometry>
     </collision>
   </link>
@@ -281,7 +281,7 @@
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="file://$(find hcr3a)/meshes/visual/Finger2_Link.STL" />
+        <mesh filename="package://hcr3a/meshes/visual/Finger2_Link.STL" />
       </geometry>
       <material name="">
         <color rgba="0.156862 0.156862 0.156862 1" />
@@ -290,7 +290,7 @@
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0" />
       <geometry>
-        <mesh filename="file://$(find hcr3a)/meshes/visual/Finger2_Link.STL" />
+        <mesh filename="package://hcr3a/meshes/visual/Finger2_Link.STL" />
       </geometry>
     </collision>
   </link>
