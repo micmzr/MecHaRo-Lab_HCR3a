@@ -15,12 +15,13 @@
 #include "hcr_hardware/hcr_hardware.hpp"
 #include <string>
 #include <vector>
+#include <numbers>
 
-int HCR_fd = -1;
-extern int get_HCR_fd(void)
-{
-  return HCR_fd;
-}
+// int HCR_fd = -1;
+// extern int get_HCR_fd(void)
+// {
+//   return HCR_fd;
+// }
 
 namespace hcr_control
 {
@@ -82,6 +83,18 @@ CallbackReturn RobotSystem::on_init(const  hardware_interface::HardwareComponent
     return hardware_interface::CallbackReturn::ERROR;
   }
 
+  #ifdef _WIN32
+  WSADATA wsaData;
+  int result = WSAStartup(MAKEWORD(2, 2), &wsaData);
+  
+  if (result != 0) 
+  {
+    RCLCPP_FATAL(LOGGER, "WSAStartup failed with error: %d\n", result);
+    
+    return CallbackReturn::ERROR;
+  }
+  #endif
+
   const auto hcr_port = stoi(info_.hardware_parameters["hcr_port"]);
   const auto hcr_ip = info_.hardware_parameters["hcr_ip"];
 
@@ -105,28 +118,63 @@ CallbackReturn RobotSystem::on_init(const  hardware_interface::HardwareComponent
 
   server_addr.sin_port = htons(hcr_port);
 
-  if ((HCR = socket(AF_INET, SOCK_STREAM, 0)) < 0)
+  HCR = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
+
+  #ifdef _WIN32
+  if (HCR == INVALID_SOCKET)
+  #else
+  if (HCR < 0)
+  #endif
   {
     RCLCPP_FATAL(LOGGER, "Could not init socket");
 
     return CallbackReturn::ERROR;
   }
 
+  #ifdef _WIN32
+  if (connect(HCR, (struct sockaddr *)&server_addr, sizeof(server_addr)) == SOCKET_ERROR)
+  #else
   if (connect(HCR, (struct sockaddr *)&server_addr, sizeof(server_addr)) < 0)
+  #endif
   {
     RCLCPP_FATAL(LOGGER, "Could not connect to HCR system");
 
     return CallbackReturn::ERROR;
   }
 
+  #ifdef _WIN32
+  DWORD timeout = 1000; 
+  result = setsockopt(HCR, SOL_SOCKET, SO_RCVTIMEO, (const char*)&timeout, sizeof(timeout));
+  if (result == SOCKET_ERROR) 
+  {
+    RCLCPP_WARN(LOGGER, "Failed to set recv timeout. Error: %d", WSAGetLastError());
+  }
+  #else
   struct timeval timeout;
-  timeout.tv_sec = 1; //SOCKET_READ_TIMEOUT_SEC;
+  timeout.tv_sec = 1;
   timeout.tv_usec = 0;
-  setsockopt(HCR, SOL_SOCKET, SO_RCVTIMEO, &timeout, sizeof(timeout));
+  int result = setsockopt(HCR, SOL_SOCKET, SO_RCVTIMEO, &timeout, sizeof(timeout));
+  if (result < 0) 
+  {
+    RCLCPP_WARN(LOGGER, "Failed to set recv timeout");
+  }
+  #endif
 
-  HCR_fd = HCR;
+  // HCR_fd = HCR;
 
   return CallbackReturn::SUCCESS;
+}
+
+CallbackReturn RobotSystem::on_shutdown(const rclcpp_lifecycle::State & previous_state)
+{
+#ifdef _WIN32
+closesocket(HCR);
+WSACleanup();
+#else
+close(HCR);
+#endif
+
+return CallbackReturn::SUCCESS;
 }
 
 std::vector<hardware_interface::StateInterface> RobotSystem::export_state_interfaces()
@@ -195,7 +243,7 @@ return_type RobotSystem::read(const rclcpp::Time & /*time*/, const rclcpp::Durat
 
       for (int i = 0; i < 6; i++)
       {
-        joint_position_[i] = jnts[i] * M_PI / 180.l;
+        joint_position_[i] = jnts[i] * std::numbers::pi / 180.l;
       }
     }
     else
@@ -262,12 +310,12 @@ return_type RobotSystem::write(const rclcpp::Time &, const rclcpp::Duration &)
     memset(HCR_buf, '\0', sizeof(HCR_buf));
 
     sprintf(HCR_buf, "MOV %7.2f %7.2f %7.2f %7.2f %7.2f %7.2f\r\n",
-            (float)(jnts_com[0] * 180.l / M_PI),
-            (float)(jnts_com[1] * 180.l / M_PI),
-            (float)(jnts_com[2] * 180.l / M_PI),
-            (float)(jnts_com[3] * 180.l / M_PI),
-            (float)(jnts_com[4] * 180.l / M_PI),
-            (float)(jnts_com[5] * 180.l / M_PI));
+            (float)(jnts_com[0] * 180.l / std::numbers::pi),
+            (float)(jnts_com[1] * 180.l / std::numbers::pi),
+            (float)(jnts_com[2] * 180.l / std::numbers::pi),
+            (float)(jnts_com[3] * 180.l / std::numbers::pi),
+            (float)(jnts_com[4] * 180.l / std::numbers::pi),
+            (float)(jnts_com[5] * 180.l / std::numbers::pi));
 
     send(HCR, HCR_buf, strlen(HCR_buf), 0);
 

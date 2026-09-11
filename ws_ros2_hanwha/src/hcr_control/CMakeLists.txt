@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.30)
 project(hcr_control LANGUAGES CXX)
 
-if(NOT WIN32)
+# if(NOT WIN32)
 
 if(CMAKE_CXX_COMPILER_ID MATCHES "(GNU|Clang)")
   add_compile_options(-Wall -Wextra)
@@ -53,7 +53,6 @@ set(ALL_TARGET_DEPENDS
   trajectory_msgs::trajectory_msgs
 )
 
-target_compile_features(hcr_control PUBLIC cxx_std_17)
 target_include_directories(hcr_control PUBLIC
 $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/hardware/include>
 $<INSTALL_INTERFACE:include/hcr_control>
@@ -92,6 +91,6 @@ ament_export_targets(export_hcr_control HAS_LIBRARY_TARGET)
 ament_export_dependencies(${HW_IF_INCLUDE_DEPENDS} ${REF_GEN_INCLUDE_DEPENDS} ${CONTROLLER_INCLUDE_DEPENDS})
 ament_package()
 
-else()
-  message(STATUS "Skipping ${PROJECT_NAME} because compilation is disabled on Windows.")
-endif()
+# else()
+#   message(STATUS "Skipping ${PROJECT_NAME} because compilation is disabled on Windows.")
+# endif()

@@ -27,13 +27,24 @@
 #include "rclcpp/macros.hpp"
 #include "rclcpp/rclcpp.hpp"
 
+#ifdef _WIN32
+// Socket - Windows
+    #ifndef WIN32_LEAN_AND_MEAN
+    #define WIN32_LEAN_AND_MEAN
+    #define NOGDI
+    #endif
+    #include <winsock2.h>
+    #include <ws2tcpip.h>
+    #pragma comment(lib, "ws2_32.lib") // Links Winsock library automatically in MSVC
+#else
 // Socket - Linux
-#include <sys/types.h>
-#include <sys/socket.h>
-#include <stdio.h>
-#include <netinet/in.h>
-#include <arpa/inet.h>
-#include <unistd.h>
+  #include <sys/types.h>
+  #include <sys/socket.h>
+  #include <stdio.h>
+  #include <netinet/in.h>
+  #include <arpa/inet.h>
+  #include <unistd.h>
+#endif
 
 using hardware_interface::return_type;
 
@@ -45,6 +56,8 @@ class RobotSystem : public hardware_interface::SystemInterface
 {
 public:
   CallbackReturn on_init(const hardware_interface::HardwareComponentInterfaceParams& params) override;
+
+  CallbackReturn on_shutdown(const rclcpp_lifecycle::State & previous_state) override;
 
   std::vector<hardware_interface::StateInterface> export_state_interfaces() override;
 
@@ -66,7 +79,11 @@ protected:
     // {"velocity", {}}
     };
   
-  int HCR; 
+  #ifdef _WIN32
+    SOCKET HCR;
+  #else
+    int HCR;
+  #endif 
   char HCR_buf[65536];
 
   const char *GET_JOINTS = "JNT\r\n"; 
