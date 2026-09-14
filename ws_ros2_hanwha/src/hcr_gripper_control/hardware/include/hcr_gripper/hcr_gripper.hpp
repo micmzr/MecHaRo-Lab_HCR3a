@@ -28,17 +28,8 @@
 #include "rclcpp/rclcpp.hpp"
 #include "rclcpp_lifecycle/node_interfaces/lifecycle_node_interface.hpp"
 #include "rclcpp_lifecycle/state.hpp"
-// #include "std_msgs/msg/string.hpp 
 #include "control_msgs/msg/dynamic_interface_group_values.hpp"
 #include "control_msgs/msg/interface_value.hpp"
-
-// Socket - Linux
-#include <sys/types.h>
-#include <sys/socket.h>
-#include <stdio.h>
-#include <netinet/in.h>
-#include <arpa/inet.h>
-#include <unistd.h>
 
 using hardware_interface::return_type;
 

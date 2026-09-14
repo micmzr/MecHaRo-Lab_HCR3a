@@ -17,12 +17,6 @@
 #include <vector>
 #include <numbers>
 
-// int HCR_fd = -1;
-// extern int get_HCR_fd(void)
-// {
-//   return HCR_fd;
-// }
-
 namespace hcr_control
 {
 
@@ -89,7 +83,7 @@ CallbackReturn RobotSystem::on_init(const  hardware_interface::HardwareComponent
   
   if (result != 0) 
   {
-    RCLCPP_FATAL(LOGGER, "WSAStartup failed with error: %d\n", result);
+    RCLCPP_FATAL(LOGGER, "WSAStartup failed with error: %d", result);
     
     return CallbackReturn::ERROR;
   }
@@ -131,36 +125,54 @@ CallbackReturn RobotSystem::on_init(const  hardware_interface::HardwareComponent
     return CallbackReturn::ERROR;
   }
 
-  #ifdef _WIN32
-  if (connect(HCR, (struct sockaddr *)&server_addr, sizeof(server_addr)) == SOCKET_ERROR)
-  #else
-  if (connect(HCR, (struct sockaddr *)&server_addr, sizeof(server_addr)) < 0)
-  #endif
+  if (bind(HCR, (struct sockaddr *)&server_addr, sizeof(server_addr)) < 0)
   {
-    RCLCPP_FATAL(LOGGER, "Could not connect to HCR system");
+    RCLCPP_FATAL(LOGGER, "Could not bind to HCR address");
 
     return CallbackReturn::ERROR;
   }
-
-  #ifdef _WIN32
-  DWORD timeout = 1000; 
-  result = setsockopt(HCR, SOL_SOCKET, SO_RCVTIMEO, (const char*)&timeout, sizeof(timeout));
-  if (result == SOCKET_ERROR) 
+#ifdef _WIN32
+  #define SOCK_OPT_CAST(ptr) reinterpret_cast<const char*>(ptr)
+#else
+  #define SOCK_OPT_CAST(ptr) reinterpret_cast<const void*>(ptr)
+#endif
+  int one = 1;
+  if (setsockopt(HCR, IPPROTO_TCP, TCP_NODELAY, SOCK_OPT_CAST(&one), sizeof(one)) < 0) 
   {
-    RCLCPP_WARN(LOGGER, "Failed to set recv timeout. Error: %d", WSAGetLastError());
+    RCLCPP_FATAL(LOGGER, "setsockopt(TCP_NODELAY) failed");
   }
-  #else
-  struct timeval timeout;
-  timeout.tv_sec = 1;
-  timeout.tv_usec = 0;
-  int result = setsockopt(HCR, SOL_SOCKET, SO_RCVTIMEO, &timeout, sizeof(timeout));
-  if (result < 0) 
-  {
-    RCLCPP_WARN(LOGGER, "Failed to set recv timeout");
-  }
-  #endif
 
-  // HCR_fd = HCR;
+#ifdef TCP_QUICKACK
+  one = 1;
+  if (setsockopt(HCR, IPPROTO_TCP, TCP_QUICKACK, &one, sizeof(one)) < 0) 
+  {
+    RCLCPP_FATAL(LOGGER, "setsockopt TCP_QUICKACK) failed");
+  }
+#else
+  RCLCPP_DEBUG(LOGGER, "TCP_QUICKACK not supported on this platform; skipping.");
+#endif
+
+  if (listen(HCR, 3) < 0)
+  {
+    RCLCPP_FATAL(LOGGER, "Listen failed");
+    return CallbackReturn::ERROR;
+  }
+  RCLCPP_INFO(LOGGER, "Listening on port %d...", hcr_port);
+
+  struct sockaddr_in socket_addr;
+  int socket_addrlen = sizeof(socket_addr);
+  HCR = accept(HCR, (struct sockaddr *)&socket_addr, (socklen_t *)&socket_addrlen);
+
+#ifdef _WIN32
+  if (HCR == INVALID_SOCKET) {
+#else
+  if (HCR < 0) {
+#endif
+    RCLCPP_FATAL(LOGGER, "Accept failed");
+    return CallbackReturn::ERROR;
+  }
+
+  RCLCPP_INFO(LOGGER, "Client connected from %s:%d", inet_ntoa(socket_addr.sin_addr), ntohs(socket_addr.sin_port));
 
   return CallbackReturn::SUCCESS;
 }
@@ -225,51 +237,35 @@ std::vector<hardware_interface::CommandInterface> RobotSystem::export_command_in
 
 return_type RobotSystem::read(const rclcpp::Time & /*time*/, const rclcpp::Duration &/* period*/)
 {
-  RCLCPP_DEBUG(LOGGER, "Send JNT command to HCR");
 
-  send(HCR, GET_JOINTS, strlen(GET_JOINTS), 0);
+  if( command_sent == false )
+  {
+    send(HCR, GET_JOINTS, strlen(GET_JOINTS), 0);
+    RCLCPP_DEBUG(LOGGER, "Send JNT command to HCR");
+    command_sent = true;
+  }
+  
   memset(HCR_buf, '\0', sizeof(HCR_buf));
 
   if (recv(HCR, HCR_buf, sizeof(HCR_buf), 0) > 0)
   {
+    command_sent = false;
     RCLCPP_DEBUG(LOGGER, "Get data from HCR: %s", HCR_buf);
 
     if (strncmp("JNT", HCR_buf, 3) == 0)
     {
       double jnts[6];
+      int gpios[8];
 
-      sscanf(HCR_buf + 4, "%lg %lg %lg %lg %lg %lg",
-             jnts, jnts + 1, jnts + 2, jnts + 3, jnts + 4, jnts + 5);
+      sscanf(HCR_buf + 4, "%lg %lg %lg %lg %lg %lg %d %d %d %d %d %d %d %d",
+             jnts, jnts + 1, jnts + 2, jnts + 3, jnts + 4, jnts + 5,
+             gpios, gpios + 1, gpios + 2, gpios + 3,
+             gpios + 4, gpios + 5, gpios + 6, gpios + 7);
 
       for (int i = 0; i < 6; i++)
       {
         joint_position_[i] = jnts[i] * std::numbers::pi / 180.l;
       }
-    }
-    else
-    {
-      RCLCPP_WARN(LOGGER, "Unknown data from HCR: %s", HCR_buf);
-    }
-  }
-  else
-  {
-    RCLCPP_WARN(LOGGER, "Cant get data from HCR");
-  }
-
-  send(HCR, GET_GPI, strlen(GET_GPI), 0);
-  memset(HCR_buf, '\0', sizeof(HCR_buf));
-
-  if (recv(HCR, HCR_buf, sizeof(HCR_buf), 0) > 0)
-  {
-    RCLCPP_DEBUG(LOGGER, "Get data from HCR: %s", HCR_buf);
-
-    if (strncmp("GPI", HCR_buf, 3) == 0)
-    {
-      int gpios[8];
-
-      sscanf(HCR_buf + 4, "%d %d %d %d %d %d %d %d",
-             gpios, gpios + 1, gpios + 2, gpios + 3,
-             gpios + 4, gpios + 5, gpios + 6, gpios + 7);
 
       for (int i = 0; i < 8; i++)
       {
@@ -309,7 +305,7 @@ return_type RobotSystem::write(const rclcpp::Time &, const rclcpp::Duration &)
 
     memset(HCR_buf, '\0', sizeof(HCR_buf));
 
-    sprintf(HCR_buf, "MOV %7.2f %7.2f %7.2f %7.2f %7.2f %7.2f\r\n",
+    sprintf(HCR_buf, "MOV %7.2f %7.2f %7.2f %7.2f %7.2f %7.2f\n",
             (float)(jnts_com[0] * 180.l / std::numbers::pi),
             (float)(jnts_com[1] * 180.l / std::numbers::pi),
             (float)(jnts_com[2] * 180.l / std::numbers::pi),
@@ -318,8 +314,10 @@ return_type RobotSystem::write(const rclcpp::Time &, const rclcpp::Duration &)
             (float)(jnts_com[5] * 180.l / std::numbers::pi));
 
     send(HCR, HCR_buf, strlen(HCR_buf), 0);
+    command_sent = true;
 
-    RCLCPP_INFO(LOGGER, "Send command to HCR: %s", HCR_buf);
+    RCLCPP_DEBUG(LOGGER, "Send command to HCR: %s", HCR_buf);
+    return return_type::OK;
   }
 
   diff = false;
@@ -340,15 +338,19 @@ return_type RobotSystem::write(const rclcpp::Time &, const rclcpp::Duration &)
 
     memset(HCR_buf, '\0', sizeof(HCR_buf));
 
-    sprintf(HCR_buf, "GPO %d %d %d %d %d %d %d %d\r\n",
+    sprintf(HCR_buf, "GPO %d %d %d %d %d %d %d %d\n",
             (int)gpo_com[0], (int)gpo_com[1], (int)gpo_com[2], (int)gpo_com[3],
             (int)gpo_com[4], (int)gpo_com[5], (int)gpo_com[6], (int)gpo_com[7]);
 
     send(HCR, HCR_buf, strlen(HCR_buf), 0);
 
     RCLCPP_INFO(LOGGER, "Send command to HCR: %s", HCR_buf);
+    return return_type::OK;
   }
 
+  send(HCR, GET_JOINTS, strlen(GET_JOINTS), 0);
+  RCLCPP_DEBUG(LOGGER, "Send JNT command to HCR");
+  command_sent = true;
   return return_type::OK;
 }
 

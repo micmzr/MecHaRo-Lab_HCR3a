@@ -38,6 +38,7 @@
     #pragma comment(lib, "ws2_32.lib") // Links Winsock library automatically in MSVC
 #else
 // Socket - Linux
+  #include <netinet/tcp.h>
   #include <sys/types.h>
   #include <sys/socket.h>
   #include <stdio.h>
@@ -86,10 +87,11 @@ protected:
   #endif 
   char HCR_buf[65536];
 
-  const char *GET_JOINTS = "JNT\r\n"; 
-  const char *GET_GPI = "GPI\r\n"; 
+  const char *GET_JOINTS = "JNT\n"; 
+  const char *GET_GPI = "GPI\n"; 
   double jnts_com[6];
   double gpo_com[6];
+  bool command_sent = false;
 
   // Store the command and state interfaces for the simulated robot
   std::vector<double> hw_commands_;

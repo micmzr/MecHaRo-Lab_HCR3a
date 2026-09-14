@@ -1,8 +1,6 @@
 cmake_minimum_required(VERSION 3.30)
 project(hcr_control LANGUAGES CXX)
 
-# if(NOT WIN32)
-
 if(CMAKE_CXX_COMPILER_ID MATCHES "(GNU|Clang)")
   add_compile_options(-Wall -Wextra)
 endif()
@@ -90,7 +88,3 @@ endif()
 ament_export_targets(export_hcr_control HAS_LIBRARY_TARGET)
 ament_export_dependencies(${HW_IF_INCLUDE_DEPENDS} ${REF_GEN_INCLUDE_DEPENDS} ${CONTROLLER_INCLUDE_DEPENDS})
 ament_package()
-
-# else()
-#   message(STATUS "Skipping ${PROJECT_NAME} because compilation is disabled on Windows.")
-# endif()
