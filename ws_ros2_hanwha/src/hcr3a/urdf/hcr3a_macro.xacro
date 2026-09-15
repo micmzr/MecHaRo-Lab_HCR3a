@@ -375,7 +375,7 @@
     <parent link="${prefix}effector_Link" />
     <child link="${prefix}finger1_Link" />
     <axis xyz="0 -1 0" />
-    <limit lower="-0.1" upper="0.03" effort="150.0" velocity="1000.0" />
+    <limit lower="-0.03" upper="0.1" effort="150.0" velocity="1000.0" />
     <dynamics damping="0" friction="0"/>
   </joint>
   <joint name="${prefix}finger2" type="prismatic">
@@ -383,7 +383,7 @@
     <parent link="${prefix}effector_Link" />
     <child link="${prefix}finger2_Link" />
     <axis xyz="0 -1 0" />
-    <limit lower="-0.03" upper="0.1" effort="150.0" velocity="1000.0" />
+    <limit lower="-0.1" upper="0.03" effort="150.0" velocity="1000.0" />
     <dynamics damping="0" friction="0"/>
     <mimic joint="${prefix}finger1" multiplier="-1" offset="0" />
   </joint>

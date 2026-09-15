@@ -20,16 +20,16 @@
       <link name="finger1_Link" />
       <link name="finger2_Link" />
       <joint name="finger1" />
-      <joint name="finger2" />
+      <passive_joint name="finger2"/>
     </group>
     
     <group_state group="gripper" name="open">
       <joint name="finger1" value="0"/>
-      <joint name="finger2" value="0"/>
+      <!-- <joint name="finger2" value="0"/> -->
     </group_state>
     <group_state group="gripper" name="close">
       <joint name="finger1" value="0.025"/>
-      <joint name="finger2" value="-0.025"/>
+      <!-- <joint name="finger2" value="-0.025"/> -->
     </group_state>
 
     <end_effector group="gripper" name="gripper" parent_group="manipulator" parent_link="forcesensor_Link"/>
