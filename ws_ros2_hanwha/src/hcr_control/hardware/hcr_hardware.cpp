@@ -16,6 +16,7 @@
 #include <string>
 #include <vector>
 #include <numbers>
+#include <chrono>
 
 namespace hcr_control
 {
@@ -38,6 +39,8 @@ CallbackReturn RobotSystem::on_init(const  hardware_interface::HardwareComponent
   // joint_velocities_command_.assign(6, 0);
   hw_gpio_in_.assign(8, 0);
   hw_gpio_out_.assign(8, 0);
+
+  robot_init = false;
 
   for (int i = 0; i < 6; i++)
     jnts_com[i] = (double) joint_position_command_[i];
@@ -172,6 +175,60 @@ CallbackReturn RobotSystem::on_init(const  hardware_interface::HardwareComponent
     return CallbackReturn::ERROR;
   }
 
+  send(HCR, GET_JOINTS, strlen(GET_JOINTS), 0);
+
+  while (robot_init == false)
+  {
+    std::this_thread::sleep_for(std::chrono::seconds(1));
+
+    if (recv(HCR, HCR_buf, sizeof(HCR_buf), 0) > 0)
+    {
+      RCLCPP_DEBUG(LOGGER, "Get data from HCR: %s", HCR_buf);
+
+      if (strncmp("JNT", HCR_buf, 3) == 0)
+      {
+        double jnts[6];
+        int gpios[8];
+
+        sscanf(HCR_buf + 4, "%lg %lg %lg %lg %lg %lg %d %d %d %d %d %d %d %d/n",
+               jnts, jnts + 1, jnts + 2, jnts + 3, jnts + 4, jnts + 5,
+               gpios, gpios + 1, gpios + 2, gpios + 3,
+               gpios + 4, gpios + 5, gpios + 6, gpios + 7);
+
+        for (int i = 0; i < 6; i++)
+        {
+          joint_position_[i] = jnts[i] * std::numbers::pi / 180.l;
+        }
+        
+        for (int i = 0; i < 6; i++)
+        {
+          joint_position_command_[i] = joint_position_[i];
+        }
+
+        // for (int i = 0; i < 8; i++)
+        // {
+        //   hw_gpio_in_[i] = (double)gpios[i];
+        // }
+        
+        // for (int i = 0; i < 8; i++)
+        // {
+        //   hw_gpio_out_[i] = hw_gpio_in_[i];
+        // }
+
+        robot_init = true;
+        break;
+      }
+      else
+      {
+        RCLCPP_WARN(LOGGER, "Unknown data from HCR: %s", HCR_buf);
+      }
+    }
+    else
+    {
+      RCLCPP_WARN(LOGGER, "Cant get data from HCR");
+    }
+  }
+
   RCLCPP_INFO(LOGGER, "Client connected from %s:%d", inet_ntoa(socket_addr.sin_addr), ntohs(socket_addr.sin_port));
 
   return CallbackReturn::SUCCESS;
@@ -257,7 +314,7 @@ return_type RobotSystem::read(const rclcpp::Time & /*time*/, const rclcpp::Durat
       double jnts[6];
       int gpios[8];
 
-      sscanf(HCR_buf + 4, "%lg %lg %lg %lg %lg %lg %d %d %d %d %d %d %d %d",
+      sscanf(HCR_buf + 4, "%lg %lg %lg %lg %lg %lg %d %d %d %d %d %d %d %d/n",
              jnts, jnts + 1, jnts + 2, jnts + 3, jnts + 4, jnts + 5,
              gpios, gpios + 1, gpios + 2, gpios + 3,
              gpios + 4, gpios + 5, gpios + 6, gpios + 7);

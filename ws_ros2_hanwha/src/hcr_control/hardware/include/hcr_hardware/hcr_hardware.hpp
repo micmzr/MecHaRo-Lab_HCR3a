@@ -92,6 +92,7 @@ protected:
   double jnts_com[6];
   double gpo_com[6];
   bool command_sent = false;
+  bool robot_init = false;
 
   // Store the command and state interfaces for the simulated robot
   std::vector<double> hw_commands_;
