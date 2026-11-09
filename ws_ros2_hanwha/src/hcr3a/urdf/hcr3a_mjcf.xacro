@@ -1,0 +1,107 @@
+<?xml version="1.0"?>
+<robot name="hcr3a" xmlns:xacro="http://ros.org/wiki/xacro">
+  <xacro:arg name="use_fake_hardware" default="true"/>
+  <xacro:property name="use_fake_hardware" value="$(arg use_fake_hardware)"/>
+  <xacro:arg name="use_ft" default="false"/>
+  <xacro:property name="use_ft" value="$(arg use_ft)"/>
+  <xacro:arg name="use_mjcf_from_topic" default="true"/>
+  <xacro:property name="use_mjcf_from_topic" value="$(arg use_mjcf_from_topic)"/>
+  <xacro:property name="M_PI" value="3.1415926535897931" />
+
+  <xacro:include filename="$(find hcr3a)/urdf/hcr3a_macro.xacro"/>
+  <xacro:hcr3a prefix=""/>
+  <!-- Camera d415 -->
+  <joint name="camera_joint" type="fixed">
+    <origin xyz="0 0 0" rpy="${M_PI} 0 ${-M_PI/2}"/>
+    <parent link="camera_Link"/>
+    <child link="camera_frame"/>
+  </joint>
+  <link name="camera_frame">
+  </link>
+
+<!-- RGBD CAMERA -->
+  <joint name="rgbd_camera_joint" type="fixed">
+    <origin xyz="0 0 0" rpy="${M_PI} 0 ${-M_PI/2}"/>
+    <parent link="camera_Link"/>
+    <child link="rgbd_camera_frame"/>
+  </joint>
+  <link name="rgbd_camera_frame">
+  </link>
+
+  <xacro:include filename="$(find hcr3a)/urdf/hcr3a_mjcf_ros2_control.xacro" />
+  <xacro:hcr_ros2_control prefix="" />
+
+  <xacro:if value="$(eval use_mjcf_from_topic)">
+  <mujoco_inputs>
+    <raw_inputs>
+      <option integrator="implicitfast"/>
+      
+      <default>
+        <default class="visual">
+          <geom group="2" type="mesh" contype="0" conaffinity="0"/>
+        </default>
+        <default class="collision">
+          <geom group="3" type="mesh"/>
+        </default>
+      </default>
+
+      <actuator>
+        <position name="joint_1" joint="joint_1" kp="500" dampratio="1.0" ctrlrange="-6.2832 6.2832" />
+        <position name="joint_2" joint="joint_2" kp="500" dampratio="1.0" ctrlrange="-6.2832 6.2832" />
+        <position name="joint_3" joint="joint_3" kp="500" dampratio="2.0" ctrlrange="-2.7925 2.7925" />
+        <position name="joint_4" joint="joint_4" kp="500" dampratio="2.0" ctrlrange="-6.2832 6.2832" />
+        <position name="joint_5" joint="joint_5" kp="500" dampratio="2.0" ctrlrange="-6.2832 6.2832" />
+        <position name="joint_6" joint="joint_6" kp="500" dampratio="2.0" ctrlrange="-3.146 3.146" />
+        <position tendon="split" name="finger1" kp="100" dampratio="3.0" ctrlrange="-0.01 0.025" />
+      </actuator>
+
+      <tendon>
+        <fixed name="split">
+          <joint joint="finger1" coef="0.5"/>
+          <joint joint="finger2" coef="-0.5"/>
+        </fixed>
+      </tendon>
+
+      <equality>
+        <joint joint1="finger1" joint2="finger2" polycoef="0 -1 0 0 0" solimp="0.95 0.99 0.001" solref="0.005 1"/>
+      </equality>
+
+      <contact>
+        <exclude body1="finger1_Link" body2="finger2_Link"/>
+        <exclude body1="link_1" body2="world"/>
+        <exclude body1="link_2" body2="world"/>
+      </contact>
+
+    </raw_inputs>
+
+    <processed_inputs>
+    
+      <camera name="camera" site="camera_frame" mode="fixed" fovy="34.5" resolution="1280 720"/>
+      <camera name="depth_camera" site="rgbd_camera_frame" mode="fixed" fovy="42.2" resolution="1920 1080"/>
+
+    </processed_inputs>
+
+    <scene>
+      <statistic center="0.4 0 0.4" extent="1"/>
+
+        <visual>
+          <headlight diffuse="0.6 0.6 0.6" ambient="0.1 0.1 0.1" specular="0 0 0"/>
+          <rgba haze="0.15 0.25 0.35 1"/>
+          <global azimuth="120" elevation="-20"/>
+        </visual>
+
+        <asset>
+          <texture type="skybox" builtin="gradient" rgb1="0.3 0.5 0.7" rgb2="0 0 0" width="512" height="3072"/>
+          <texture type="2d" name="groundplane" builtin="checker" mark="edge" rgb1="0.2 0.3 0.4" rgb2="0.1 0.2 0.3"
+            markrgb="0.8 0.8 0.8" width="300" height="300"/>
+          <material name="groundplane" texture="groundplane" texuniform="true" texrepeat="5 5"/>
+        </asset>
+
+        <worldbody>
+          <light pos="0 0 1.5" dir="0 0 -1" directional="true"/>
+        </worldbody>
+    </scene>
+  </mujoco_inputs>
+  </xacro:if>
+  
+</robot>

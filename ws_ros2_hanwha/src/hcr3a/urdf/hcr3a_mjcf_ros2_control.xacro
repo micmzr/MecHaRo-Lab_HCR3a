@@ -1,0 +1,114 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+  <xacro:macro name="hcr_ros2_control" params="prefix">
+    <ros2_control name="MujocoSystem" type="system">
+      <hardware>
+        <plugin>mujoco_ros2_control/MujocoSystemInterface</plugin>
+
+        <param name="mujoco_model">
+          $(find hcr3a)/worlds/scene.xml
+        </param>
+
+        <param name="sim_speed_factor">1.0</param>
+        <param name="headless">false</param>
+
+      </hardware>
+
+      <joint name="joint_1">
+        <command_interface name="position"/>
+        <command_interface name="velocity"/>
+        <state_interface name="position">
+          <param name="initial_value">0.0</param>
+        </state_interface>
+        <state_interface name="velocity"/>
+        <state_interface name="effort"/>
+        <state_interface name="torque"/>
+      </joint>
+
+      <joint name="joint_2">
+        <command_interface name="position"/>
+        <command_interface name="velocity"/>
+        <state_interface name="position">
+          <param name="initial_value">0.0</param>
+        </state_interface>
+        <state_interface name="velocity"/>
+        <state_interface name="effort"/>
+        <state_interface name="torque"/>
+      </joint>
+
+      <joint name="joint_3">
+        <command_interface name="position"/>
+        <command_interface name="velocity"/>
+        <state_interface name="position">
+          <param name="initial_value">0.0</param>
+        </state_interface>
+        <state_interface name="velocity"/>
+        <state_interface name="effort"/>
+        <state_interface name="torque"/>
+      </joint>
+
+      <joint name="joint_4">
+        <command_interface name="position"/>
+        <command_interface name="velocity"/>
+        <state_interface name="position">
+          <param name="initial_value">0.0</param>
+        </state_interface>
+        <state_interface name="velocity"/>
+        <state_interface name="effort"/>
+        <state_interface name="torque"/>
+      </joint>
+
+      <joint name="joint_5">
+        <command_interface name="position"/>
+        <command_interface name="velocity"/>
+        <state_interface name="position">
+          <param name="initial_value">0.0</param>
+        </state_interface>
+        <state_interface name="velocity"/>
+        <state_interface name="effort"/>
+        <state_interface name="torque"/>
+      </joint>
+
+      <joint name="joint_6">
+        <command_interface name="position"/>
+        <command_interface name="velocity"/>
+        <state_interface name="position">
+          <param name="initial_value">0.0</param>
+        </state_interface>
+        <state_interface name="velocity"/>
+        <state_interface name="effort"/>
+        <state_interface name="torque"/>
+      </joint>
+
+      <joint name="finger1">
+        <command_interface name="position"/>
+        <state_interface name="position">
+          <param name="initial_value">0.0</param>
+        </state_interface>
+        <state_interface name="velocity"/>
+        <state_interface name="effort"/>
+        <state_interface name="force"/>
+      </joint>
+
+      <joint name="finger2">
+        <state_interface name="position">
+          <param name="initial_value">0.0</param>
+        </state_interface>
+        <state_interface name="velocity"/>
+        <state_interface name="effort"/>
+        <state_interface name="force"/>
+      </joint>
+
+      <!-- For cameras, the sensor name _must_ match the camera name in the MJCF -->
+      <sensor name="camera">
+        <!-- Parameters will be used as is -->
+        <param name="frame_name">camera_color_mujoco_frame</param>
+        <param name="info_topic">/camera/color/camera_info</param>
+        <param name="image_topic">/camera/color/image_raw</param>
+        <param name="depth_topic">/camera/aligned_depth_to_color/image_raw</param>
+      </sensor>
+
+    </ros2_control>
+  </xacro:macro>
+</robot>
+

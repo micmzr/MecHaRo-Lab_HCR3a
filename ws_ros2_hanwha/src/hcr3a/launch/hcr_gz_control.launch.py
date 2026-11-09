@@ -182,7 +182,7 @@ def generate_launch_description():
             "--controller-manager",
             "/controller_manager",
         ],
-        parameters=[{'use_sim_time': use_sim_time}, robot_controllers],
+        parameters=[{'use_sim_time': use_sim_time}, robot_description, robot_controllers],
     )
 
     delay_rviz_after_joint_state_broadcaster_spawner = RegisterEventHandler(

@@ -1,0 +1,126 @@
+<mujoco model="hcr3a">
+  <compiler angle="radian" meshdir="assets/" texturedir="assets/"/>
+  <asset>
+    <mesh name="base_link" content_type="model/stl" file="full/base_link.stl"/>
+    <mesh name="Link_1" content_type="model/stl" file="full/Link_1.stl"/>
+    <mesh name="Link_2" content_type="model/stl" file="full/Link_2.stl"/>
+    <mesh name="Link_3" content_type="model/stl" file="full/Link_3.stl"/>
+    <mesh name="Link_4" content_type="model/stl" file="full/Link_4.stl"/>
+    <mesh name="Link_5" content_type="model/stl" file="full/Link_5.stl"/>
+    <mesh name="Link_6" content_type="model/stl" file="full/Link_6.stl"/>
+    <mesh name="Camera_Link" content_type="model/stl" file="full/Camera_Link.stl"/>
+    <mesh name="Forcesensor_Link" content_type="model/stl" file="full/Forcesensor_Link.stl"/>
+    <mesh name="Effector_Link" content_type="model/stl" file="full/Effector_Link.stl"/>
+    <mesh name="Finger1_Link" content_type="model/stl" file="full/Finger1_Link.stl"/>
+    <mesh name="Finger2_Link" content_type="model/stl" file="full/Finger2_Link.stl"/>
+  </asset>
+  <worldbody>
+    <body name="link_1" pos="0 0 0.03769" quat="0.499998 0.5 0.500002 0.5">
+      <inertial pos="-0.00973377 0.0753973 -6.52426e-08" quat="0.67252 0.672511 0.21845 0.21846" mass="1.07574" diaginertia="0.00200369 0.00198147 0.00106503"/>
+      <joint name="joint_1" pos="0 0 0" axis="0 1 0" range="-6.2832 6.2832" actuatorfrcrange="-300 300"/>
+      <body name="link_2" pos="-0.06 0.10091 0" quat="0.707105 -0.707108 0 0">
+        <inertial pos="-0.0855708 0.1005 0" quat="0.499999 0.500001 -0.500001 0.499999" mass="2.3011" diaginertia="0.0052285 0.00385494 0.00346751"/>
+        <joint name="joint_2" pos="0 0 0" axis="-1 0 0" range="-6.2832 6.2832" actuatorfrcrange="-300 300"/>
+        <body name="link_3" pos="0 0.201 0">
+          <inertial pos="0.0396314 0.129914 -1.90388e-05" quat="0.509312 0.489982 -0.509791 0.490544" mass="1.57952" diaginertia="0.00680957 0.00642687 0.0013857"/>
+          <joint name="joint_3" pos="0 0 0" axis="-1 0 0" range="-2.7925 2.7925" actuatorfrcrange="-150 150"/>
+          <body name="link_4" pos="-0.043643 0.2815 -0.00013246" quat="0.707105 -0.707108 0 0">
+            <inertial pos="-0.0407592 0.0332666 -4.68821e-05" quat="0.416983 0.571262 -0.416517 0.571225" mass="0.519193" diaginertia="0.00070194 0.000700896 0.000292652"/>
+            <joint name="joint_4" pos="0 0 0" axis="-1 0 0" range="-6.2832 6.2832" actuatorfrcrange="-150 150"/>
+            <body name="link_5" pos="-0.044744 0.103 0">
+              <inertial pos="-0.0332659 0.0405154 -3.79421e-05" quat="0.109761 0.698306 -0.108728 0.698928" mass="0.519193" diaginertia="0.00070194 0.000700896 0.000292652"/>
+              <joint name="joint_5" pos="0 0 0" axis="0 1 0" range="-6.2832 6.2832" actuatorfrcrange="-150 150"/>
+              <body name="link_6" pos="-0.10284 0.0445 -0.00011784">
+                <inertial pos="-0.0318722 -0.0651312 -0.00390833" quat="0.625291 0.604865 -0.324941 0.370895" mass="0.508947" diaginertia="0.00826809 0.00707485 0.00150467"/>
+                <joint name="joint_6" pos="0 0 0" axis="-1 0 0" range="-3.146 3.146" actuatorfrcrange="-150 150"/>
+                <body name="finger1_Link" pos="-0.175679 -0.00883163 0.00880161" quat="0.27363 0.651724 0.273278 0.652459">
+                  <inertial pos="-0.00559183 0.0123672 -0.0226798" quat="0.970401 -0.221092 -0.0935045 -0.0264156" mass="0.0168276" diaginertia="3.38709e-06 2.39147e-06 2.27939e-06"/>
+                  <joint name="finger1" pos="0 0 0" axis="0 -1 0" type="slide" range="-0.01 0.03" actuatorfrcrange="-20 20"/>
+                  <geom type="mesh" mesh="Finger1_Link" class="collision"/>
+                  <geom type="mesh" rgba="0.156862 0.156862 0.156862 1" mesh="Finger1_Link" class="visual"/>
+                  <site name="finger1_Link" pos="0 0 0" quat="1.0 0 0 0"/>
+                </body>
+                <body name="finger2_Link" pos="-0.175658 0.00838157 -0.00871552" quat="0.27363 0.651724 0.273278 0.652459">
+                  <inertial pos="0.00559183 -0.0123999 -0.0226798" quat="0.970401 0.221092 0.0935045 -0.0264156" mass="0.0168276" diaginertia="3.38709e-06 2.39147e-06 2.27939e-06"/>
+                  <joint name="finger2" pos="0 0 0" axis="0 -1 0" type="slide" range="-0.03 0.01" actuatorfrcrange="-20 20"/>
+                  <geom type="mesh" mesh="Finger2_Link" class="collision"/>
+                  <geom type="mesh" rgba="0.156862 0.156862 0.156862 1" mesh="Finger2_Link" class="visual"/>
+                  <site name="finger2_Link" pos="0 0 0" quat="1.0 0 0 0"/>
+                </body>
+                <geom type="mesh" mesh="Link_6" class="collision"/>
+                <geom type="mesh" rgba="1 1 1 1" mesh="Link_6" class="visual"/>
+                <geom pos="-0.078661 0.105 -0.00053185" quat="0.499163 0.501405 0.501381 -0.498043" type="mesh" mesh="Camera_Link" class="collision"/>
+                <geom pos="-0.078661 0.105 -0.00053185" quat="0.499163 0.501405 0.501381 -0.498043" type="mesh" rgba="0.752941 0.752941 0.752941 1" mesh="Camera_Link" class="visual"/>
+                <geom pos="-0.0611667 4.94381e-06 -6.70811e-05" quat="-0.00158668 0.707508 0.0023593 -0.7067" type="mesh" mesh="Forcesensor_Link" class="collision"/>
+                <geom pos="-0.0611667 4.94381e-06 -6.70811e-05" quat="-0.00158668 0.707508 0.0023593 -0.7067" type="mesh" rgba="0.666667 0.698039 0.768627 1" mesh="Forcesensor_Link" class="visual"/>
+                <geom pos="-0.219167 0.00137526 -0.00163258" quat="-0.268119 0.654593 -0.654326 -0.267355" type="mesh" mesh="Effector_Link" class="collision"/>
+                <geom pos="-0.219167 0.00137526 -0.00163258" quat="-0.268119 0.654593 -0.654326 -0.267355" type="mesh" rgba="0.792157 0.819608 0.933333 1" mesh="Effector_Link" class="visual"/>
+                <site name="link_6" pos="0 0 0" quat="1.0 0 0 0"/>
+                <site name="camera_Link" pos="-0.078661 0.105 -0.00053185" quat="0.4991626396641156 0.5014047018061499 0.5013813152269523 -0.49804293079164336"/>
+                <site name="forcesensor_Link" pos="-0.061166737695999715 4.943807223253827e-06 -6.708107408920317e-05" quat="-0.0015866767553817049 0.7075079492745193 0.002359296346008711 -0.706699665976283"/>
+                <site name="effector_Link" pos="-0.2191666338667545 0.00137525949993067 -0.0016325835566850513" quat="-0.26811915264124286 0.6545925587928116 -0.6543256944363255 -0.267354797152476"/>
+                <site name="flange" pos="0 0 0" quat="1.0 0 0 0"/>
+                <site name="tool0" pos="-0.2191666338667545 0.00137525949993067 -0.0016325835566850513" quat="-0.26811915264124286 0.6545925587928116 -0.6543256944363255 -0.267354797152476"/>
+                <site name="camera_frame" pos="-0.078661 0.105 -0.00053185" quat="1.653680873943372e-05 -0.0007917537366799066 0.7051308211062668 0.7090767927231553"/>
+                <site name="rgbd_camera_frame" pos="-0.078661 0.105 -0.00053185" quat="1.653680873943372e-05 -0.0007917537366799066 0.7051308211062668 0.7090767927231553"/>
+                <camera fovy="34.5" mode="fixed" name="camera" resolution="1280 720" pos="-0.078661 0.105 -0.00053185" quat="0.0007917537366799066 1.653680873943372e-05 0.7090767927231553 -0.7051308211062668"/>
+                <camera fovy="42.2" mode="fixed" name="depth_camera" resolution="1920 1080" pos="-0.078661 0.105 -0.00053185" quat="0.0007917537366799066 1.653680873943372e-05 0.7090767927231553 -0.7051308211062668"/>
+              </body>
+              <geom type="mesh" mesh="Link_5" class="collision"/>
+              <geom type="mesh" rgba="1 0.454902 0 1" mesh="Link_5" class="visual"/>
+              <site name="link_5" pos="0 0 0" quat="1.0 0 0 0"/>
+            </body>
+            <geom type="mesh" mesh="Link_4" class="collision"/>
+            <geom type="mesh" rgba="1 0.454902 0 1" mesh="Link_4" class="visual"/>
+            <site name="link_4" pos="0 0 0" quat="1.0 0 0 0"/>
+          </body>
+          <geom type="mesh" mesh="Link_3" class="collision"/>
+          <geom type="mesh" rgba="1 0.454902 0 1" mesh="Link_3" class="visual"/>
+          <site name="link_3" pos="0 0 0" quat="1.0 0 0 0"/>
+        </body>
+        <geom type="mesh" mesh="Link_2" class="collision"/>
+        <geom type="mesh" rgba="0.156862 0.156862 0.156862 1" mesh="Link_2" class="visual"/>
+        <site name="link_2" pos="0 0 0" quat="1.0 0 0 0"/>
+      </body>
+      <geom type="mesh" mesh="Link_1" class="collision"/>
+      <geom type="mesh" rgba="0.156862 0.156862 0.156862 1" mesh="Link_1" class="visual"/>
+      <site name="link_1" pos="0 0 0" quat="1.0 0 0 0"/>
+    </body>
+    <geom type="mesh" mesh="base_link" class="collision"/>
+    <geom type="mesh" rgba="0.156862 0.156862 0.156862 1" mesh="base_link" class="visual"/>
+    <site name="base_link" pos="0 0 0" quat="1.0 0 0 0"/>
+    <site name="real_base_link" pos="0 0 0" quat="1.0 0 0 0"/>
+  </worldbody>
+  <option integrator="implicitfast"/>
+  <default>
+    <default class="visual">
+      <geom conaffinity="0" contype="0" group="2" type="mesh"/>
+    </default>
+    <default class="collision">
+      <geom group="3" type="mesh"/>
+    </default>
+  </default>
+  <actuator>
+    <position ctrlrange="-6.2832 6.2832" dampratio="1.0" joint="joint_1" kp="500" name="joint_1"/>
+    <position ctrlrange="-6.2832 6.2832" dampratio="1.0" joint="joint_2" kp="500" name="joint_2"/>
+    <position ctrlrange="-2.7925 2.7925" dampratio="2.0" joint="joint_3" kp="500" name="joint_3"/>
+    <position ctrlrange="-6.2832 6.2832" dampratio="2.0" joint="joint_4" kp="500" name="joint_4"/>
+    <position ctrlrange="-6.2832 6.2832" dampratio="2.0" joint="joint_5" kp="500" name="joint_5"/>
+    <position ctrlrange="-3.146 3.146" dampratio="2.0" joint="joint_6" kp="500" name="joint_6"/>
+    <position ctrlrange="-0.01 0.025" dampratio="3.0" kp="100" name="finger1" tendon="split"/>
+  </actuator>
+  <tendon>
+    <fixed name="split">
+      <joint coef="0.5" joint="finger1"/>
+      <joint coef="-0.5" joint="finger2"/>
+    </fixed>
+  </tendon>
+  <equality>
+    <joint joint1="finger1" joint2="finger2" polycoef="0 -1 0 0 0" solimp="0.95 0.99 0.001" solref="0.005 1"/>
+  </equality>
+  <contact>
+    <exclude body1="finger1_Link" body2="finger2_Link"/>
+    <exclude body1="link_1" body2="world"/>
+    <exclude body1="link_2" body2="world"/>
+  </contact>
+</mujoco>

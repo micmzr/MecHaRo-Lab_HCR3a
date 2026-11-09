@@ -56,3 +56,13 @@ ros2 launch hcr3a hcr_moveit.launch.py use_sim_time:=true
 ``` bash
 ros2 launch hello_moveit_py hello_moveit.launch.py use_sim_time:=true
 ```
+
+**_MuJoCo sample commands - TODO_**
+
+``` bash
+xacro src/hcr3a/urdf/hcr3a_mjcf.xacro > src/hcr3a/urdf/hcr3a_mjcf.urdf
+ros2 run mujoco_ros2_control robot_description_to_mjcf.sh --save_only -u src/hcr3a/urdf/hcr3a_mjcf.urdf -o /tmp/output/
+ros2 run mujoco_vendor simulate /tmp/output/mujoco_description_formatted.xml
+cp -rf /tmp/output/mujoco_description_formatted.xml src/hcr3a/worlds/hcr3a_mjcf.xml
+cp -rf /tmp/output/assets/ src/hcr3a/worlds/
+```

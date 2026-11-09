@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0"?>
 <robot xmlns:xacro="http://ros.org/wiki/xacro">
   <xacro:property name="M_PI" value="3.1415926535897931" />
   <xacro:macro name="hcr3a" params="prefix">
@@ -31,7 +31,7 @@
   <link name="${prefix}link_1">
     <inertial>
       <origin xyz="-0.00973376743956444 0.0753973498277641 -6.52426151931743E-08" rpy="0 0 0" />
-      <mass value="1.07573995983057" />>
+      <mass value="1.07573995983057" />
       <inertia
         ixx="0.00167952991787637" ixy="0.000446312968033745" ixz="-8.8686874053242E-09"
         iyy="0.00138918799663758" iyz="1.25971797230156E-08" izz="0.00198146807289238" />
@@ -307,7 +307,7 @@
     <parent link="${prefix}real_base_link" />
     <child link="${prefix}link_1" />
     <axis xyz="0 1 0"  />
-    <limit lower="-6.2832" upper="6.2832" effort="150.0" velocity="3.1416" />
+    <limit lower="-6.2832" upper="6.2832" effort="300.0" velocity="3.1416" />
     <dynamics damping="0" friction="0"/>
   </joint>
   <joint name="${prefix}joint_2" type="revolute">
@@ -315,7 +315,7 @@
     <parent link="${prefix}link_1" />
     <child link="${prefix}link_2" />
     <axis xyz="-1 0 0" />
-    <limit lower="-6.2832" upper="6.2832" effort="150.0" velocity="3.1416" />
+    <limit lower="-6.2832" upper="6.2832" effort="300.0" velocity="3.1416" />
     <dynamics damping="0" friction="0"/>
   </joint>
   <joint name="${prefix}joint_3" type="revolute">
@@ -375,7 +375,7 @@
     <parent link="${prefix}effector_Link" />
     <child link="${prefix}finger1_Link" />
     <axis xyz="0 -1 0" />
-    <limit lower="-0.03" upper="0.1" effort="150.0" velocity="1000.0" />
+    <limit lower="-0.01" upper="0.03" effort="20.0" velocity="1000.0" />
     <dynamics damping="0" friction="0"/>
   </joint>
   <joint name="${prefix}finger2" type="prismatic">
@@ -383,7 +383,7 @@
     <parent link="${prefix}effector_Link" />
     <child link="${prefix}finger2_Link" />
     <axis xyz="0 -1 0" />
-    <limit lower="-0.1" upper="0.03" effort="150.0" velocity="1000.0" />
+    <limit lower="-0.03" upper="0.01" effort="20.0" velocity="1000.0" />
     <dynamics damping="0" friction="0"/>
     <mimic joint="${prefix}finger1" multiplier="-1" offset="0" />
   </joint>

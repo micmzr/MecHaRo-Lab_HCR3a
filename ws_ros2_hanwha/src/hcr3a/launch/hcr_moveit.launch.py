@@ -153,19 +153,20 @@ def launch_setup(context, *args, **kwargs):
     )
 
     # Publish TF
-    robot_state_pub_node = Node(
-        package="robot_state_publisher",
-        condition=IfCondition(not_only_rviz),
-        executable="robot_state_publisher",
-        name="robot_state_publisher",
-        output="both",
-        parameters=[
-            {'use_sim_time': use_sim_time},
-            moveit_config.robot_description,
-            ],
-    )
+    # robot_state_pub_node = Node(
+    #     package="robot_state_publisher",
+    #     condition=IfCondition(not_only_rviz),
+    #     executable="robot_state_publisher",
+    #     name="robot_state_publisher",
+    #     output="both",
+    #     parameters=[
+    #         {'use_sim_time': use_sim_time},
+    #         moveit_config.robot_description,
+    #         ],
+    # )
 
-    nodes_to_start = [move_group_node, rviz_node, robot_state_pub_node]
+    # nodes_to_start = [move_group_node, rviz_node, robot_state_pub_node]
+    nodes_to_start = [move_group_node, rviz_node]
     return nodes_to_start
 
 
@@ -179,7 +180,7 @@ def generate_launch_description():
             "robot_xacro_file",
             default_value="hcr3a.xacro",
             description="Xacro describing the robot.",
-            choices=["hcr3a.xacro"],
+            choices=["hcr3a.xacro", "hcr3a_mjcf.xacro"],
         )
     )
     declared_arguments.append(

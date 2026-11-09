@@ -2,3 +2,5 @@ ws_ros2_hanwha/build/
 ws_ros2_hanwha/install/
 ws_ros2_hanwha/log/
 ws_ros2_hanwha/src/hello_moveit_py/hello_moveit_py/__pycache__/
+ws_ros2_hanwha/MJDATA.TXT
+ws_ros2_hanwha/MJMODEL.TXT
