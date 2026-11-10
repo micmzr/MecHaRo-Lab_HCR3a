@@ -1,4 +1,6 @@
 <mujoco model="scene">
+  <compiler assetdir="assets" angle="degree" coordinate="local"/>
+  <option gravity="0 0 -9.81" integrator="RK4"/>
   <include file="./hcr3a_mjcf.xml"/>
 
   <statistic center="0 -0.4 0.4" extent="1"/>
@@ -18,6 +20,9 @@
 
   <worldbody>
     <light pos="0 0 1.5" dir="0 0 -1" directional="true"/>
+    <light directional="true" diffuse=".8 .8 .8" specular=".2 .2 .2" pos="0 0 5" dir="0 0 -1"/>
     <geom conaffinity="0" contype="1" material="groundplane" name="floor" pos="0 0 -2.5" size="0 0 0.01" type="plane"/>
   </worldbody>
+
+  <include file="./workspace.xml"/> 
 </mujoco>

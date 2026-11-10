@@ -1,0 +1,48 @@
+<mujocoinclude>
+    <asset>
+        <!-- Materiały dla elementów sceny roboczej -->
+        <material name="table_mat" rgba=".45 .33 .22 1.0" specular="0.1" roughness="0.8"/>
+        <material name="zone_red_mat" rgba=".8 .1 .1 0.3"/>
+        <material name="zone_blue_mat" rgba=".1 .1 .8 0.3"/>
+        <material name="box_mat" rgba=".3 .3 .3 1.0" specular="0.2"/>
+        
+        <!-- Materiały dla samych klocków -->
+        <material name="block_red_mat" rgba=".9 .1 .1 1.0" specular="0.3" roughness="0.2"/>
+        <material name="block_blue_mat" rgba=".1 .1 .9 1.0" specular="0.3" roughness="0.2"/>
+    </asset>
+
+    <worldbody>
+        <!-- STÓŁ ROBOCZY -->
+        <body name="table" pos="0.1 0.35 -0.02">
+            <geom name="table_top" type="box" size="0.5 0.4 0.02" material="table_mat"/>
+            <geom name="leg1" type="cylinder" size="0.02 0.28" pos=" 0.45  0.35 -0.3" material="table_mat"/>
+            <geom name="leg2" type="cylinder" size="0.02 0.28" pos="-0.45  0.35 -0.3" material="table_mat"/>
+            <geom name="leg3" type="cylinder" size="0.02 0.28" pos=" 0.45 -0.35 -0.3" material="table_mat"/>
+            <geom name="leg4" type="cylinder" size="0.02 0.28" pos="-0.45 -0.35 -0.3" material="table_mat"/>
+
+            <!-- Wizualne strefy spawnowania klocków na stole -->
+            <geom name="red_spawn_zone" type="box" size="0.03 0.03 0.001" pos="-0.25 0.1 0.02" material="zone_red_mat" conaffinity="0" contype="0"/>
+            <geom name="blue_spawn_zone" type="box" size="0.03 0.03 0.001" pos="-0.15 0.1 0.02" material="zone_blue_mat" conaffinity="0" contype="0"/>
+
+            <!-- PUDEŁKO DO ODKŁADANIA KLOCKÓW -->
+            <body name="drop_box" pos="0.2 0.0 0.02">
+                <geom type="box" size="0.1 0.1 0.005" pos="0 0 0.0025" material="box_mat"/>
+                <geom type="box" size="0.005 0.1 0.03" pos="-0.1 0 0.03" material="box_mat"/>
+                <geom type="box" size="0.005 0.1 0.03" pos=" 0.1 0 0.03" material="box_mat"/>
+                <geom type="box" size="0.095 0.005 0.03" pos="0 -0.1 0.03" material="box_mat"/>
+                <geom type="box" size="0.095 0.005 0.03" pos="0  0.1 0.03" material="box_mat"/>
+            </body>
+        </body>
+
+        <!-- PULA UKRYTYCH KLOCKÓW (Object Pool) -->
+        <body name="pool_red_block" pos="-0.15 0.45 0.0">
+            <joint name="joint_red" type="free"/>
+            <geom type="box" size="0.0125 0.0125 0.0125" mass="0.02" material="block_red_mat"/>
+        </body>
+
+        <body name="pool_blue_block" pos="-0.05 0.45 0.0">
+            <joint name="joint_blue" type="free"/>
+            <geom type="box" size="0.0125 0.0125 0.0125" mass="0.02" material="block_blue_mat"/>
+        </body>
+    </worldbody>
+</mujocoinclude>

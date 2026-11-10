@@ -391,16 +391,9 @@
       <parent link="${prefix}camera_Link" />
       <child link="camera_depth_optical_frame" />
     </joint -->
-  <!-- TODO
-  <xacro:include filename="$(find hcr3a)/urdf/hcr3a_gz.ros2_control.xacro" />
-  <xacro:hcr_ros2_control prefix="" />
-  <xacro:include filename="$(find hcr3a)/urdf/hcr3a_gz_gripper.ros2_control.xacro" />
-  <xacro:gripper_ros2_control prefix=""/>
-  <xacro:include filename="$(find hcr3a)/urdf/gz_ft_sensor.ros2_control.xacro" />
-  <xacro:ft_sensor_ros2_control prefix=""/> -->
   <!-- Camera d415 -->
   <joint name="camera_joint" type="fixed">
-    <origin rpy="3.141592653589793 0 -1.5707963267948966" xyz="0 0 0"/>
+    <origin rpy="1.5707963267948966 0 0" xyz="0 0 0"/>
     <parent link="camera_Link"/>
     <child link="camera_frame"/>
   </joint>
@@ -414,13 +407,104 @@
   </joint>
   <link name="rgbd_camera_frame">
   </link>
+  <ros2_control name="MujocoSystem" type="system">
+    <hardware>
+      <plugin>mujoco_ros2_control/MujocoSystemInterface</plugin>
+      <param name="mujoco_model">
+          /home/mmazur/Prace/MecHaRo-Lab_HCR3a/ws_ros2_hanwha/install/hcr3a/share/hcr3a/worlds/scene.xml
+        </param>
+      <param name="sim_speed_factor">1.0</param>
+      <param name="headless">false</param>
+    </hardware>
+    <joint name="joint_1">
+      <command_interface name="position"/>
+      <command_interface name="velocity"/>
+      <state_interface name="position">
+        <param name="initial_value">0.0</param>
+      </state_interface>
+      <state_interface name="velocity"/>
+      <state_interface name="effort"/>
+      <state_interface name="torque"/>
+    </joint>
+    <joint name="joint_2">
+      <command_interface name="position"/>
+      <command_interface name="velocity"/>
+      <state_interface name="position">
+        <param name="initial_value">0.0</param>
+      </state_interface>
+      <state_interface name="velocity"/>
+      <state_interface name="effort"/>
+      <state_interface name="torque"/>
+    </joint>
+    <joint name="joint_3">
+      <command_interface name="position"/>
+      <command_interface name="velocity"/>
+      <state_interface name="position">
+        <param name="initial_value">0.0</param>
+      </state_interface>
+      <state_interface name="velocity"/>
+      <state_interface name="effort"/>
+      <state_interface name="torque"/>
+    </joint>
+    <joint name="joint_4">
+      <command_interface name="position"/>
+      <command_interface name="velocity"/>
+      <state_interface name="position">
+        <param name="initial_value">0.0</param>
+      </state_interface>
+      <state_interface name="velocity"/>
+      <state_interface name="effort"/>
+      <state_interface name="torque"/>
+    </joint>
+    <joint name="joint_5">
+      <command_interface name="position"/>
+      <command_interface name="velocity"/>
+      <state_interface name="position">
+        <param name="initial_value">0.0</param>
+      </state_interface>
+      <state_interface name="velocity"/>
+      <state_interface name="effort"/>
+      <state_interface name="torque"/>
+    </joint>
+    <joint name="joint_6">
+      <command_interface name="position"/>
+      <command_interface name="velocity"/>
+      <state_interface name="position">
+        <param name="initial_value">0.0</param>
+      </state_interface>
+      <state_interface name="velocity"/>
+      <state_interface name="effort"/>
+      <state_interface name="torque"/>
+    </joint>
+    <joint name="finger1">
+      <command_interface name="position"/>
+      <state_interface name="position">
+        <param name="initial_value">0.0</param>
+      </state_interface>
+      <state_interface name="velocity"/>
+      <state_interface name="effort"/>
+      <state_interface name="force"/>
+    </joint>
+    <joint name="finger2">
+      <state_interface name="position">
+        <param name="initial_value">0.0</param>
+      </state_interface>
+      <state_interface name="velocity"/>
+      <state_interface name="effort"/>
+      <state_interface name="force"/>
+    </joint>
+    <!-- For cameras, the sensor name _must_ match the camera name in the MJCF -->
+    <sensor name="camera">
+      <!-- Parameters will be used as is -->
+      <param name="frame_name">camera_color_mujoco_frame</param>
+      <param name="info_topic">/camera/color/camera_info</param>
+      <param name="image_topic">/camera/color/image_raw</param>
+      <param name="depth_topic">/camera/aligned_depth_to_color/image_raw</param>
+    </sensor>
+  </ros2_control>
   <mujoco_inputs>
-    <!-- The contents of `raw_inputs` will be copied and pasted directly into the MJCF -->
     <raw_inputs>
       <option integrator="implicitfast"/>
-      <!-- <visual>
-        <global znear="0.1" zfar="100.0"/>
-      </visual> -->
       <default>
         <default class="visual">
           <geom conaffinity="0" contype="0" group="2" type="mesh"/>
@@ -453,13 +537,10 @@
         <exclude body1="link_2" body2="world"/>
       </contact>
     </raw_inputs>
-    <!-- Specific inputs that require processing from the conversion script-->
     <processed_inputs>
-      <!-- The camera with the specified values will be added at the specified site name. -->
       <camera fovy="34.5" mode="fixed" name="camera" resolution="1280 720" site="camera_frame"/>
       <camera fovy="42.2" mode="fixed" name="depth_camera" resolution="1920 1080" site="rgbd_camera_frame"/>
     </processed_inputs>
-    <!-- scene tag inside the xacro also allows to generate the mjcf description with the scene information -->
     <scene>
       <statistic center="0.4 0 0.4" extent="1"/>
       <visual>
